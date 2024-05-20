@@ -38,7 +38,7 @@ export class RequestFormComponent implements OnInit {
     this.authService.getUser().subscribe(user => { 
       this.userId = user ? user.id : null;
       this.userName = user ? user.name : null; 
-      this.requestForm = this.formBuilder.group({  // Initialize form after getting user
+      this.requestForm = this.formBuilder.group({  
           snack: [''],
           drink: [''],
           misc: [''],

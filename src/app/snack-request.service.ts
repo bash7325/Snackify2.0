@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SnackRequest } from './snack-request'; // Assuming you have an interface for the snack request data
+import { SnackRequest } from './snack-request'; 
 
 @Injectable({
   providedIn: 'root'
 })
 export class SnackRequestService {
-  private apiUrl = 'http://localhost:3000/api/requests'; // Update with your actual API URL
+  private apiUrl = 'http://localhost:3000/api/requests'; // Update with my actual API URL
 
   constructor(private http: HttpClient) { }
 
@@ -34,6 +34,4 @@ export class SnackRequestService {
     return this.http.delete(`${this.apiUrl}/${requestId}`);
   }
   
-
-  // Add other methods as needed (e.g., getRequestById, updateRequest, deleteRequest)
 }

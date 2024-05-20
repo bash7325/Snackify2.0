@@ -17,7 +17,7 @@ export class RegisterComponent {
       username: ['', Validators.required],
       password: ['', Validators.required],
       name: ['', Validators.required]
-      // Add other form controls here
+
     });
   }
 
@@ -25,7 +25,7 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       this.authService.register(this.registerForm.value).subscribe({
         next: () => {
-          // Registration successful - redirect to login or another page
+          // Registration successful - redirect to login
           console.log('Registration successful');
           this.router.navigate(['/login']);
         },

@@ -94,10 +94,6 @@ app.post('/api/register', async (req, res) => {
     }
   });
   
-
-// ... other imports ...
-
-// Routes
 app.get('/api/requests', (req, res) => {
   db.all(`
   SELECT sr.*, u.name AS user_name
@@ -206,7 +202,7 @@ app.post('/api/login', async (req, res) => {
             return res.status(401).json({ error: 'Invalid username or password' });
         }
         
-        const passwordMatch = await bcrypt.compare(password, row.password); // Correct bcrypt.compare usage
+        const passwordMatch = await bcrypt.compare(password, row.password); 
         if (passwordMatch) {
             // Login successful - send relevant user data, excluding password
             res.json(row);

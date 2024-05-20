@@ -56,7 +56,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   deleteRequest(request: SnackRequest) {
-    if (confirm('Are you sure you want to delete this request?')) { // Confirmation (optional)
+    if (confirm('Are you sure you want to delete this request?')) { 
       this.snackRequestService.deleteRequest(request.id!).subscribe(
         () => {
           this.snackRequests = this.snackRequests.filter(req => req.id !== request.id);

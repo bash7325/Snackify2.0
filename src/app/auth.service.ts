@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, tap } from 'rxjs';
-import { User } from './user'; // Define a User interface/class
+import { User } from './user'; 
 import { map } from 'rxjs';
 import { switchMap } from 'rxjs';
 
@@ -9,7 +9,7 @@ import { switchMap } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api';// Replace with your actual API endpoint
+  private apiUrl = 'http://localhost:3000/api';// Replace with MY actual API endpoint when I have it
 
   constructor(private http: HttpClient) {}
 
@@ -25,7 +25,7 @@ export class AuthService {
     return this.http.post<User>(`${this.apiUrl}/login`, { username, password })
       .pipe(
         tap(user => {
-          // Store user data in local storage or session storage
+          // Store user data in local storage 
           localStorage.setItem('user', JSON.stringify(user));
         })
       );

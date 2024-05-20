@@ -8,13 +8,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(public authService: AuthService, private router: Router) {} // Inject Router
+  constructor(public authService: AuthService, private router: Router) {} 
 
 
   
   logout() {
     this.authService.logout();
-    console.log('Logged out:', this.authService.isLoggedIn()); // Add this log
+    console.log('Logged out:', this.authService.isLoggedIn());
     this.router.navigate(['/']);
   }
   
