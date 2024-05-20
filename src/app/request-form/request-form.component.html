@@ -1,0 +1,78 @@
+<div class="container">
+  <h1 class="text-center mt-5">Welcome {{ userName }}</h1>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form [formGroup]="requestForm" (ngSubmit)="onSubmit()" class="card p-4 mt-5">
+        <div *ngIf="showSuccessMessage" class="alert alert-success mt-3" role="alert">
+          Request submitted successfully!
+        </div>
+        <h2 class="text-center mb-4">Request Snacks</h2>
+
+        <div class="mb-3">
+          <label for="snack" class="form-label">Snack:</label>
+          <input type="text" class="form-control" id="snack" formControlName="snack">
+        </div>
+
+        <div class="mb-3">
+          <label for="drink" class="form-label">Drink:</label>
+          <input type="text" class="form-control" id="drink" formControlName="drink">
+        </div>
+
+        <div class="mb-3">
+          <label for="misc" class="form-label">Misc:</label>
+          <input type="text" class="form-control" id="misc" formControlName="misc">
+        </div>
+
+        <div class="mb-3">
+          <label for="link" class="form-label">Link (optional):</label>
+          <input type="text" class="form-control" id="link" formControlName="link">
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="submitting">
+          <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Submit Request
+        </button>
+
+        <div *ngIf="submitError" class="alert alert-danger mt-3" role="alert">
+          {{ submitError }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div *ngIf="userId" class="container mt-5 mb-5">
+<div class="row justify-content-center">
+  <div class="col-md-12">
+    <h3 class="text-center mb-4" style="font-size: 1.8rem;">Your Snack Request History</h3>
+    <table class="table table-striped" *ngIf="userRequests.length > 0">
+      <thead>
+        <tr>
+          <th>Snack</th>
+          <th>Drink</th>
+          <th>Misc</th>
+          <th>Link</th>
+          <th>Date Requested</th>
+          <th>Date Ordered</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of userRequests">
+          <td>{{ request.snack }}</td>
+          <td>{{ request.drink }}</td>
+          <td>{{ request.misc }}</td>
+          <td>
+            <a *ngIf="request.link" href="{{ request.link }}" target="_blank" rel="noopener noreferrer">
+              View Link
+            </a>
+            <span *ngIf="!request.link">N/A</span>
+          </td>
+          <td>{{ request.created_at | date: 'shortDate' }}</td>
+          <td>{{ request.ordered_at | date: 'shortDate' }}</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    <p class="text-center" *ngIf="userRequests.length === 0">You have not made any requests yet.</p>
+  </div>
+</div>
+</div>
