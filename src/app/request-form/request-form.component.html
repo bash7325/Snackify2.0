@@ -2,29 +2,27 @@
   <h1 class="text-center mt-5">Welcome {{ userName }}</h1>
   <div class="row justify-content-center">
     <div class="col-md-6">
-      <form [formGroup]="requestForm" (ngSubmit)="onSubmit()" class="card p-4 mt-5">
+      <form [formGroup]="requestForm" (ngSubmit)="onSubmit()" class="card p-4 mt-5 bounceInUp">
         <div *ngIf="showSuccessMessage" class="alert alert-success mt-3" role="alert">
           Request submitted successfully!
         </div>
         <h2 class="text-center mb-4">Request Snacks</h2>
 
         <div class="mb-3">
-          <label for="snack" class="form-label">Snack:</label>
-          <input type="text" class="form-control" id="snack" formControlName="snack">
+          <label for="type" class="form-label">Item Type:</label>
+          <select class="form-select" id="type" formControlName="type">
+            <option value="snack">Snack</option>
+            <option value="drink">Drink</option>
+            <option value="misc">Misc</option>
+          </select>
         </div>
 
         <div class="mb-3">
-          <label for="drink" class="form-label">Drink:</label>
-          <input type="text" class="form-control" id="drink" formControlName="drink">
+          <label for="item" class="form-label">Item Name:</label>
+          <input type="text" class="form-control" id="item" formControlName="item">
         </div>
 
-        <div class="mb-3">
-          <label for="misc" class="form-label">Misc:</label>
-          <input type="text" class="form-control" id="misc" formControlName="misc">
-        </div>
-
-        <div class="mb-3">
-          <label for="link" class="form-label">Link (optional):</label>
+        <div class="mb-3">  <label for="link" class="form-label">Link (optional):</label>
           <input type="text" class="form-control" id="link" formControlName="link">
         </div>
 
