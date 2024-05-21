@@ -4,7 +4,7 @@ import { SnackRequestService } from '../snack-request.service';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { SnackRequest } from '../snack-request';
-import { User } from '../user';
+import { User } from '../user'; //I probably dont need this anymore
 
 @Component({
   selector: 'app-request-form',
