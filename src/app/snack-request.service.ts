@@ -7,7 +7,7 @@ import { SnackRequest } from './snack-request';
   providedIn: 'root'
 })
 export class SnackRequestService {
-  private apiUrl = 'https://snackify-backend-c8a799790919.herokuapp.com/api/requests'; // Update with my actual API URL
+  private apiUrl = 'http://localhost:3000/api/requests'; // Update with my actual API URL
 
   constructor(private http: HttpClient) { }
 
@@ -29,6 +29,10 @@ export class SnackRequestService {
   updateRequestStatus(requestId: number, ordered: boolean): Observable<any> {
     return this.http.put(`${this.apiUrl}/${requestId}/order`, { ordered }); // send ordered as a boolean 1 or 0
   }
+
+  updateKeepOnHandStatus(requestId: number, keepOnHand: boolean): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${requestId}/keep`, { keep_on_hand: keepOnHand ? 1 : 0 }); 
+  }  
 
   deleteRequest(requestId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${requestId}`);
