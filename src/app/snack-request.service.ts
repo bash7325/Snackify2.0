@@ -30,6 +30,10 @@ export class SnackRequestService {
     return this.http.put(`${this.apiUrl}/${requestId}/order`, { ordered }); // send ordered as a boolean 1 or 0
   }
 
+  updateKeepOnHandStatus(requestId: number, keepOnHand: boolean): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${requestId}/keep`, { keep_on_hand: keepOnHand ? 1 : 0 }); 
+  }  
+
   deleteRequest(requestId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${requestId}`);
   }

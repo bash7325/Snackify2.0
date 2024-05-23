@@ -70,12 +70,13 @@ export class RequestFormComponent implements OnInit {
         const { type, item, link } = this.requestForm.value;
 
         // Create requestData
-        const requestData: SnackRequest = { 
+        const requestData: SnackRequest = {
           user_id: this.userId!,
-          snack: item, 
-          drink: item, 
+          snack: item,
+          drink: item,
           misc: item,
-          link: link
+          link: link,
+          keep_on_hand: 0
         };
 
         // Set the correct type to empty string based on the selected type

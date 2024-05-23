@@ -40,6 +40,7 @@ db.serialize(() => {
         ordered_flag INTEGER DEFAULT 0,
         created_at TEXT,
         ordered_at TEXT,
+        keep_on_hand INTEGER DEFAULT 0, 
         FOREIGN KEY (user_id) REFERENCES users(id)
     )
     `);
@@ -170,6 +171,21 @@ app.post('/api/requests', async (req, res) => {
       }
     });
   });
+
+  app.put('/api/requests/:id/keep', (req, res) => {
+    const requestId = req.params.id;
+    const keepOnHand = req.body.keep_on_hand ? 1 : 0;
+  
+    db.run('UPDATE snack_requests SET keep_on_hand = ? WHERE id = ?', [keepOnHand, requestId], function(err) {
+      if (err) {
+        console.error('Error updating request:', err.message);
+        res.status(500).json({ error: 'Failed to update snack request' });
+      } else {
+        res.json({ message: 'Snack request updated successfully' });
+      }
+    });
+  });
+  
 
   app.delete('/api/requests/:id', (req, res) => {
     const requestId = req.params.id;

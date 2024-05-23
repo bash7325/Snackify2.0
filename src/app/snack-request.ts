@@ -6,8 +6,9 @@ export interface SnackRequest {
   drink?: string;
   misc?: string;
   link?: string;
-  ordered_flag?: number; // Make optional
+  ordered_flag?: number; 
   created_at?: string;
   ordered_at?: string;
-  user_name?: string; // Make optional
+  user_name?: string;
+  keep_on_hand: number; 
 }
