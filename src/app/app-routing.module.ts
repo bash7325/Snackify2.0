@@ -6,12 +6,14 @@ import { UserResolver } from './user.resolver';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component'; 
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
+import { SnackListComponent } from './snack-list/snack-list.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent }, // Default route
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'request', component: RequestFormComponent },
+  { path: 'snack-list', component: SnackListComponent },
   { path: 'admin', component: AdminDashboardComponent },
   { path: '**', redirectTo: '/login' }, //404 errors
   { 
