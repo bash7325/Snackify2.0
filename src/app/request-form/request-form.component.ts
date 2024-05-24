@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SnackRequestService } from '../snack-request.service';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
@@ -28,7 +28,7 @@ export class RequestFormComponent implements OnInit {
   ) {
     this.requestForm = this.formBuilder.group({
       type: ['snack'], 
-      item: [''],
+      item: ['', Validators.required],
       link: ['']
     });
   }
