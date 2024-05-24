@@ -85,7 +85,6 @@
     <table class="table table-striped" *ngIf="keepOnHand.length > 0">
       <thead>
         <tr>
-          <th>Name</th>
           <th>Snack</th>
           <th>Drink</th>
           <th>Misc</th>
@@ -95,7 +94,6 @@
       </thead>
       <tbody>
         <tr *ngFor="let request of keepOnHand">
-          <td>{{ request.user_name }}</td>
           <td>{{ request.snack }}</td>
           <td>{{ request.drink }}</td>
           <td>{{ request.misc }}</td>

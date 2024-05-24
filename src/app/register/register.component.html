@@ -19,7 +19,7 @@
             <input type="text" class="form-control" id="name" formControlName="name" required>
           </div>
   
-          <button type="submit" class="btn btn-primary" [disabled]="!registerForm.valid">Create Account</button>
+          <button type="submit" class="btn btn-danger" [disabled]="!registerForm.valid">Create Account</button>
           <div *ngIf="registerError" class="alert alert-danger mt-3" role="alert">
             {{ registerError }}
           </div>
