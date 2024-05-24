@@ -10,6 +10,7 @@ import { RequestFormComponent } from './request-form/request-form.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
+import { SnackListComponent } from './snack-list/snack-list.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { RegisterComponent } from './register/register.component';
     RequestFormComponent,
     AdminDashboardComponent,
     HomeComponent,
-    RegisterComponent
+    RegisterComponent,
+    SnackListComponent
   ],
   imports: [
     BrowserModule,

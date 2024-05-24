@@ -1,0 +1,39 @@
+<div class="container mt-5">
+    <h2 class="mb-4">Snack List</h2>
+  
+    <div *ngIf="loading" class="text-center">
+      Loading requests...
+    </div>
+  
+    <div *ngIf="error" class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+  
+    <table class="table table-striped" *ngIf="!loading && !error">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Snack</th>
+          <th>Drink</th>
+          <th>Misc</th>
+          <th>Link</th>
+          <th>Date Requested</th>
+          <th>Date Ordered</th> 
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of snackRequests">
+          <td>{{ request.user_name }}</td>
+          <td>{{ request.snack }}</td>
+          <td>{{ request.drink }}</td>
+          <td>{{ request.misc }}</td>
+          <td><a *ngIf="request.link" href="{{ request.link }}" target="_blank" rel="noopener noreferrer">
+               View Link 
+             </a></td>
+          <td>{{ request.created_at | date:'shortDate' }}</td>
+          <td>{{ request.ordered_at | date:'shortDate' }}</td> 
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
