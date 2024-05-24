@@ -20,7 +20,7 @@
           <a class="nav-link" routerLink="/snack-list" routerLinkActive="active">Snack List</a>
        </li>       
         <li class="nav-item" *ngIf="authService.isLoggedIn()">
-          <a class="nav-link" (click)="logout()">Logout</a> 
+          <a class="nav-link logout-link" (click)="logout()">Logout</a> 
        </li>
        
       </ul>
