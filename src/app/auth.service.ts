@@ -14,14 +14,12 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   register(userData: any): Observable<any> {
-    console.log('Registering user:', userData);
     return this.http.post<any>(`${this.apiUrl}/register`, userData).pipe(
       switchMap(() => this.login(userData.username, userData.password))
     );
   }
 
   login(username: string, password: string): Observable<User> {
-    console.log('Logging in with:', username, password);
     return this.http.post<User>(`${this.apiUrl}/login`, { username, password })
       .pipe(
         tap(user => {
@@ -43,14 +41,13 @@ export class AuthService {
   getUser(): Observable<User | null> {
     const userString = localStorage.getItem('user');
     const user = userString ? JSON.parse(userString) as User : null;
-    console.log('User fetched from local storage:', user);
     return of(user);
   }
   
 
   isAdmin(): Observable<boolean> {
     return this.getUser().pipe(
-      tap(user => console.log('User in isAdmin:', user)),  // Log the user object
+     // tap(user => console.log('User in isAdmin:', user)),  // Log the user object
       map(user => !!user && user.role === 'Admin')        // Strict equality check for 'Admin'
     );
   }
