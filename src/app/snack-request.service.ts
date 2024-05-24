@@ -7,7 +7,7 @@ import { SnackRequest } from './snack-request';
   providedIn: 'root'
 })
 export class SnackRequestService {
-  private apiUrl = 'http://localhost:3000/api/requests'; // Update with my actual API URL
+private apiUrl = 'https://snackify-backend-c8a799790919.herokuapp.com/api/requests';
 
   constructor(private http: HttpClient) { }
 

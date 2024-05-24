@@ -19,17 +19,21 @@
 
         <div class="mb-3">
           <label for="item" class="form-label">Item Name:</label>
-          <input type="text" class="form-control" id="item" formControlName="item">
+          <input type="text" class="form-control" id="item" formControlName="item" maxlength="150">
         </div>
 
         <div class="mb-3">  <label for="link" class="form-label">Link (optional, copy full URL):</label>
           <input type="text" class="form-control" id="link" formControlName="link">
         </div>
 
-        <button type="submit" class="btn btn-danger" [disabled]="submitting">
+        <button type="submit" class="btn btn-danger" [disabled]="requestForm.get('item')?.invalid || submitting">
           <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
           Submit Request
         </button>
+    
+        <div *ngIf="requestForm.get('item')?.invalid && requestForm.get('item')?.touched" class="alert alert-danger mt-3" role="alert">
+          Item name is required.
+        </div>
 
         <div *ngIf="submitError" class="alert alert-danger mt-3" role="alert">
           {{ submitError }}

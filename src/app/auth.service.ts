@@ -9,7 +9,7 @@ import { switchMap } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api';// Replace with MY actual API endpoint when I have it
+  private apiUrl = 'https://snackify-backend-c8a799790919.herokuapp.com/api';// Replace with MY actual API endpoint when I have it
 
   constructor(private http: HttpClient) {}
 

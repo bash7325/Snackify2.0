@@ -1,0 +1,5 @@
+.table th {
+    position: sticky; /* Keep the header fixed */
+    top: 0; 
+  }
+  
