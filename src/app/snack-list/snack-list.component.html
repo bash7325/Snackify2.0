@@ -8,7 +8,8 @@
     <div *ngIf="error" class="alert alert-danger" role="alert">
       {{ error }}
     </div>
-  
+    <h3>Master Snack List</h3>
+    <div style="overflow-y: auto; max-height: 500px;"> 
     <table class="table table-striped" *ngIf="!loading && !error">
       <thead>
         <tr>
@@ -35,5 +36,6 @@
         </tr>
       </tbody>
     </table>
+    </div>
   </div>
   
