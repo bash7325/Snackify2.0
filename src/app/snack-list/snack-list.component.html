@@ -20,6 +20,7 @@
           <th>Link</th>
           <th>Date Requested</th>
           <th>Date Ordered</th> 
+          <th>Keep on Hand</th>
         </tr>
       </thead>
       <tbody>
@@ -33,6 +34,7 @@
              </a></td>
           <td>{{ request.created_at | date:'shortDate' }}</td>
           <td>{{ request.ordered_at | date:'shortDate' }}</td> 
+          <td>{{ request.keep_on_hand ? 'Yes' : 'No' }}</td> 
         </tr>
       </tbody>
     </table>
