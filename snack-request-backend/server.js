@@ -1,50 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcrypt'); // For password hashing
+const { db, isProduction } = require('./db-config');
 
 const app = express();
 const port = process.env.PORT || 3000;
-
-// Database Setup
-const db = new sqlite3.Database('snack_requests.db', (err) => {
-    if (err) {
-        console.error(err.message);
-    }
-    console.log('Connected to the snack_requests database.');
-});
-
-db.serialize(() => {
-
-    // Create the users table
-    db.run(`
-      CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL,
-        role TEXT DEFAULT 'user', 
-        name TEXT NOT NULL
-      )
-    `);
-
-    // Create the snack_requests table
-    db.run(`
-    CREATE TABLE IF NOT EXISTS snack_requests (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER, 
-        snack TEXT,
-        drink TEXT,
-        misc TEXT,
-        link TEXT,
-        ordered_flag INTEGER DEFAULT 0,
-        created_at TEXT,
-        ordered_at TEXT,
-        keep_on_hand INTEGER DEFAULT 0, 
-        FOREIGN KEY (user_id) REFERENCES users(id)
-    )
-    `);
-});
 
 // Middleware
 const corsOptions = {
