@@ -1,117 +1,342 @@
-<div class="container mt-5 p-5">
+<div class="container-fluid mt-4 mb-5 px-4">
   <h1 class="text-center mb-4">Admin Dashboard</h1>
 
-  <div *ngIf="!loading && !error">
-    <h3>Pending Requests</h3>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Snack</th>
-          <th>Drink</th>
-          <th>Misc</th>
-          <th>Link</th>
-          <th>Date Requested</th>
-          <th>Order Status</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let request of snackRequests">
-          <td>{{ request.user_name }}</td>
-          <td>{{ request.snack }}</td>
-          <td>{{ request.drink }}</td>
-          <td>{{ request.misc }}</td>
-          <td><a *ngIf="request.link" href="{{ request.link }}" target="_blank" rel="noopener noreferrer">
-              View Link
-            </a></td>
-          <td>{{ request.created_at | date:'shortDate' }}</td>
-          <td>
-            <button (click)="markAsOrdered(request)" *ngIf="!request.ordered_flag" class="btn btn-sm btn-success">Mark
-              as Ordered</button>
-          </td>
-          <td>
-            <button (click)="deleteRequest(request)" class="btn btn-sm btn-danger">
-              Delete
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3 class="mt-4">Ordered Requests</h3>
-    <div style="overflow-y: auto; max-height: 500px;"> 
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Snack</th>
-          <th>Drink</th>
-          <th>Misc</th>
-          <th>Link</th>
-          <th>Date Requested</th>
-          <th>Date Ordered</th>
-          <th>Keep on Hand</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let request of orderedRequests">
-          <td>{{ request.user_name }}</td>
-          <td>{{ request.snack }}</td>
-          <td>{{ request.drink }}</td>
-          <td>{{ request.misc }}</td>
-          <td><a *ngIf="request.link" href="{{ request.link }}" target="_blank" rel="noopener noreferrer">
-              View Link
-            </a></td>
-          <td>{{ request.created_at | date:'shortDate' }}</td>
-          <td>{{ request.ordered_at | date:'shortDate' }}</td>
-          <td>
-            <button (click)="markKeepOnHand(request)" *ngIf="request.ordered_flag == 1" [disabled]="request.keep_on_hand" class="btn btn-sm btn-warning">
-              {{ request.keep_on_hand ? 'Marked Keep on Hand' : 'Keep on Hand' }}
-            </button>
-          </td>          
-          <td>
-            <button (click)="deleteRequest(request)" class="btn btn-sm btn-danger">
-              Delete
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
-    <h3 class="mt-4">Keep on Hand</h3>
-    <div style="overflow-y: auto; max-height: 500px;"> 
-    <table class="table table-striped" *ngIf="keepOnHand.length > 0">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Snack</th>
-          <th>Drink</th>
-          <th>Misc</th>
-          <th>Link</th>
-          <th>Remove</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let request of keepOnHand">
-          <td>{{ request.user_name }}</td>
-          <td>{{ request.snack }}</td>
-          <td>{{ request.drink }}</td>
-          <td>{{ request.misc }}</td>
-          <td><a *ngIf="request.link" href="{{ request.link }}" target="_blank" rel="noopener noreferrer">
-              View Link </a>
-          </td>
-          <td>
-            <button (click)="markNotKeepOnHand(request)" class="btn btn-sm btn-danger">
-              Remove
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <p class="mt-3">Loading dashboard data...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    <strong>Error:</strong> {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error">
+    
+    <!-- Statistics Cards -->
+    <div class="stats-container mb-4" *ngIf="showStats">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <div class="stat-card stat-pending">
+            <div class="stat-icon">📋</div>
+            <div class="stat-content">
+              <div class="stat-value">{{ stats.totalPending }}</div>
+              <div class="stat-label">Pending Requests</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card stat-ordered">
+            <div class="stat-icon">✅</div>
+            <div class="stat-content">
+              <div class="stat-value">{{ stats.totalOrdered }}</div>
+              <div class="stat-label">Total Ordered</div>
+              <div class="stat-subtext">{{ stats.orderedThisWeek }} this week</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card stat-keephand">
+            <div class="stat-icon">🔖</div>
+            <div class="stat-content">
+              <div class="stat-value">{{ stats.totalKeepOnHand }}</div>
+              <div class="stat-label">Keep on Hand</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card stat-avg">
+            <div class="stat-icon">⏱️</div>
+            <div class="stat-content">
+              <div class="stat-value">{{ stats.avgDaysToOrder }}</div>
+              <div class="stat-label">Avg Days to Order</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Items Row -->
+      <div class="row g-3 mt-2">
+        <div class="col-md-6">
+          <div class="stat-card stat-list">
+            <h6>🔥 Top Requested Snacks</h6>
+            <ul class="top-list">
+              <li *ngFor="let item of stats.topSnacks">
+                <span class="item-name">{{ item.name }}</span>
+                <span class="item-count">{{ item.count }}</span>
+              </li>
+              <li *ngIf="stats.topSnacks.length === 0" class="text-muted">No data yet</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="stat-card stat-list">
+            <h6>👥 Most Active Requesters</h6>
+            <ul class="top-list">
+              <li *ngFor="let user of stats.topUsers">
+                <span class="item-name">{{ user.name }}</span>
+                <span class="item-count">{{ user.count }}</span>
+              </li>
+              <li *ngIf="stats.topUsers.length === 0" class="text-muted">No data yet</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="filters-bar mb-4">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-4">
+          <div class="input-group">
+            <span class="input-group-text">🔍</span>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="Search by name, snack, drink, or misc..." 
+              [(ngModel)]="searchTerm"
+              (input)="onSearchChange()">
+          </div>
+        </div>
+        <div class="col-md-2">
+          <select class="form-select" [(ngModel)]="dateFilter" (change)="onDateFilterChange()">
+            <option value="all">All Time</option>
+            <option value="week">Last 7 Days</option>
+            <option value="month">Last 30 Days</option>
+          </select>
+        </div>
+        <div class="col-md-6 text-end">
+          <button class="btn btn-sm btn-outline-secondary me-2" (click)="showStats = !showStats">
+            {{ showStats ? 'Hide' : 'Show' }} Stats
+          </button>
+          <button 
+            class="btn btn-sm btn-warning me-2" 
+            *ngIf="undoStack.length > 0"
+            (click)="undo()">
+            ↶ Undo Last Action
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeTab === 'pending'" (click)="activeTab = 'pending'">
+          📋 Pending ({{ filteredSnackRequests.length }})
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeTab === 'ordered'" (click)="activeTab = 'ordered'">
+          ✅ Ordered ({{ filteredOrderedRequests.length }})
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeTab === 'keepOnHand'" (click)="activeTab = 'keepOnHand'">
+          🔖 Keep on Hand ({{ filteredKeepOnHand.length }})
+        </a>
+      </li>
+    </ul>
+
+    <!-- Pending Requests Tab -->
+    <div *ngIf="activeTab === 'pending'">
+      <!-- Bulk Actions -->
+      <div class="bulk-actions mb-3" *ngIf="selectedPending.size > 0">
+        <span class="me-3"><strong>{{ selectedPending.size }}</strong> selected</span>
+        <button class="btn btn-sm btn-success me-2" (click)="bulkMarkAsOrdered()">
+          ✓ Mark All as Ordered
+        </button>
+        <button class="btn btn-sm btn-danger" (click)="bulkDelete()">
+          🗑️ Delete Selected
+        </button>
+      </div>
+
+      <div class="action-bar mb-2">
+        <button class="btn btn-sm btn-outline-primary" (click)="exportToCsv('pending')">
+          📊 Export to CSV
+        </button>
+      </div>
+
+      <div class="table-container" *ngIf="filteredSnackRequests.length > 0">
+    <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>
+                <input 
+                  type="checkbox" 
+                  [checked]="selectAllPending"
+                  (change)="toggleSelectAll()">
+              </th>
+              <th (click)="sortBy('user_name', 'pending')" class="sortable">
+                Name {{ getSortIcon('user_name', 'pending') }}
+              </th>
+              <th (click)="sortBy('snack', 'pending')" class="sortable">
+                Snack {{ getSortIcon('snack', 'pending') }}
+              </th>
+              <th (click)="sortBy('drink', 'pending')" class="sortable">
+                Drink {{ getSortIcon('drink', 'pending') }}
+              </th>
+              <th>Misc</th>
+              <th>Link</th>
+              <th (click)="sortBy('created_at', 'pending')" class="sortable">
+                Date Requested {{ getSortIcon('created_at', 'pending') }}
+              </th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let request of filteredSnackRequests" 
+                [class.old-request]="isOlderThan(request.created_at, 7)">
+              <td>
+                <input 
+                  type="checkbox" 
+                  [checked]="selectedPending.has(request.id!)"
+                  (change)="toggleSelect(request.id)">
+              </td>
+              <td>{{ request.user_name }}</td>
+              <td>{{ request.snack }}</td>
+              <td>{{ request.drink }}</td>
+              <td>{{ request.misc }}</td>
+              <td>
+                <a *ngIf="request.link" href="{{ request.link }}" target="_blank" rel="noopener noreferrer">
+                  View Link
+                </a>
+              </td>
+              <td>
+                {{ request.created_at | date:'shortDate' }}
+                <span class="badge bg-warning text-dark ms-1" *ngIf="isOlderThan(request.created_at, 7)">
+                  Old
+                </span>
+              </td>
+              <td>
+                <button (click)="markAsOrdered(request)" class="btn btn-sm btn-success me-1">
+                  ✓ Ordered
+                </button>
+                <button (click)="deleteRequest(request)" class="btn btn-sm btn-danger">
+                  🗑️
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="filteredSnackRequests.length === 0" class="empty-state">
+        <p>🎉 No pending requests!</p>
+      </div>
+    </div>
+
+    <!-- Ordered Requests Tab -->
+    <div *ngIf="activeTab === 'ordered'">
+      <div class="action-bar mb-2">
+        <button class="btn btn-sm btn-outline-primary" (click)="exportToCsv('ordered')">
+          📊 Export to CSV
+        </button>
+      </div>
+
+      <div class="table-container" *ngIf="filteredOrderedRequests.length > 0">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th (click)="sortBy('user_name', 'ordered')" class="sortable">
+                Name {{ getSortIcon('user_name', 'ordered') }}
+              </th>
+              <th (click)="sortBy('snack', 'ordered')" class="sortable">
+                Snack {{ getSortIcon('snack', 'ordered') }}
+              </th>
+              <th (click)="sortBy('drink', 'ordered')" class="sortable">
+                Drink {{ getSortIcon('drink', 'ordered') }}
+              </th>
+              <th>Misc</th>
+              <th>Link</th>
+              <th (click)="sortBy('created_at', 'ordered')" class="sortable">
+                Requested {{ getSortIcon('created_at', 'ordered') }}
+              </th>
+              <th (click)="sortBy('ordered_at', 'ordered')" class="sortable">
+                Ordered {{ getSortIcon('ordered_at', 'ordered') }}
+              </th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let request of filteredOrderedRequests">
+              <td>{{ request.user_name }}</td>
+              <td>{{ request.snack }}</td>
+              <td>{{ request.drink }}</td>
+              <td>{{ request.misc }}</td>
+              <td>
+                <a *ngIf="request.link" href="{{ request.link }}" target="_blank" rel="noopener noreferrer">
+                  View Link
+                </a>
+              </td>
+              <td>{{ request.created_at | date:'shortDate' }}</td>
+              <td>{{ request.ordered_at | date:'shortDate' }}</td>
+              <td>
+                <button 
+                  (click)="markKeepOnHand(request)" 
+                  [disabled]="request.keep_on_hand === 1" 
+                  class="btn btn-sm btn-warning me-1">
+                  {{ request.keep_on_hand === 1 ? '🔖 Kept' : '🔖 Keep' }}
+                </button>
+                <button (click)="deleteRequest(request)" class="btn btn-sm btn-danger">
+                  🗑️
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="filteredOrderedRequests.length === 0" class="empty-state">
+        <p>No ordered requests found.</p>
+      </div>
+    </div>
+
+    <!-- Keep on Hand Tab -->
+    <div *ngIf="activeTab === 'keepOnHand'">
+      <div class="action-bar mb-2">
+        <button class="btn btn-sm btn-outline-primary" (click)="exportToCsv('keepOnHand')">
+          📊 Export Shopping List
+        </button>
+      </div>
+
+      <div class="table-container" *ngIf="filteredKeepOnHand.length > 0">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Snack</th>
+              <th>Drink</th>
+              <th>Misc</th>
+              <th>Link</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let request of filteredKeepOnHand">
+              <td>{{ request.user_name }}</td>
+              <td>{{ request.snack }}</td>
+              <td>{{ request.drink }}</td>
+              <td>{{ request.misc }}</td>
+              <td>
+                <a *ngIf="request.link" href="{{ request.link }}" target="_blank" rel="noopener noreferrer">
+                  View Link
+                </a>
+              </td>
+              <td>
+                <button (click)="markNotKeepOnHand(request)" class="btn btn-sm btn-danger">
+                  Remove
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="filteredKeepOnHand.length === 0" class="empty-state">
+        <p>No items marked as keep on hand.</p>
+      </div>
     </div>
 
   </div>
-
 </div>
