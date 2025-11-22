@@ -11,13 +11,6 @@
     <div *ngIf="error" class="alert alert-danger" role="alert">
       <strong>Error:</strong> {{ error }}
     </div>
-
-    <!-- Debug info -->
-    <div class="alert alert-info">
-      <p>Loading: {{ loading }}</p>
-      <p>Error: {{ error }}</p>
-      <p>Requests Count: {{ snackRequests.length }}</p>
-    </div>
   
     <div class="table-container" *ngIf="!loading && !error">
     <table class="table table-striped">
