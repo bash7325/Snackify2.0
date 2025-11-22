@@ -54,24 +54,49 @@ if (isProduction) {
         console.error('Error creating tables:', err);
     });
 
+    // Convert SQLite-style ? placeholders to PostgreSQL $1, $2, etc.
+    const convertQuery = (text, params) => {
+        let paramIndex = 1;
+        const pgQuery = text.replace(/\?/g, () => `$${paramIndex++}`);
+        return pgQuery;
+    };
+
     db = {
         query: (text, params, callback) => {
-            return pool.query(text, params, callback);
+            const pgQuery = convertQuery(text, params);
+            return pool.query(pgQuery, params, callback);
         },
         get: (text, params, callback) => {
-            pool.query(text, params, (err, res) => {
+            const pgQuery = convertQuery(text, params);
+            pool.query(pgQuery, params, (err, res) => {
                 if (err) return callback(err);
                 callback(null, res.rows[0]);
             });
         },
         all: (text, params, callback) => {
-            pool.query(text, params, (err, res) => {
+            const pgQuery = convertQuery(text, params);
+            pool.query(pgQuery, params, (err, res) => {
                 if (err) return callback(err);
                 callback(null, res.rows);
             });
         },
         run: (text, params, callback) => {
-            pool.query(text, params, callback);
+            let pgQuery = convertQuery(text, params);
+            
+            // If it's an INSERT query without RETURNING, add RETURNING id
+            if (pgQuery.trim().toUpperCase().startsWith('INSERT') && !pgQuery.toUpperCase().includes('RETURNING')) {
+                pgQuery += ' RETURNING id';
+            }
+            
+            pool.query(pgQuery, params, (err, res) => {
+                if (callback) {
+                    const context = {
+                        lastID: res?.rows?.[0]?.id,
+                        changes: res?.rowCount || 0
+                    };
+                    callback.call(context, err, res);
+                }
+            });
         }
     };
 } else {
