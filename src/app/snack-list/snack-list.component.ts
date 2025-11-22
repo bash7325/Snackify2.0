@@ -9,12 +9,13 @@ import { SnackRequest } from '../snack-request';
 })
 export class SnackListComponent implements OnInit {
   snackRequests: SnackRequest[] = [];
-  loading = true;
+  loading = false;
   error: string | null = null;
 
   constructor(private snackRequestService: SnackRequestService) {}
 
   ngOnInit() {
+    this.loading = true;
     console.log('SnackListComponent: Loading all requests');
     this.snackRequestService.getRequests().subscribe({ // Get all requests
       next: (requests: SnackRequest[]) => {
