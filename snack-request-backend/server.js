@@ -117,25 +117,27 @@ app.post('/api/requests', async (req, res) => {
       const { user_id, snack, drink, misc, link } = req.body;
       console.log('Received snack request:', req.body);
 
-      const result = await db.run(
-        'INSERT INTO snack_requests (user_id, snack, drink, misc, link, created_at) VALUES (?, ?, ?, ?, ?, datetime("now", "localtime"))',
+        const isProduction = process.env.DATABASE_URL !== undefined;
+        const dateSql = isProduction ? 'NOW()' : 'datetime("now", "localtime")';
+        const result = await db.run(
+        `INSERT INTO snack_requests (user_id, snack, drink, misc, link, created_at) VALUES (?, ?, ?, ?, ?, ${dateSql})`,
           [user_id, snack, drink, misc, link],
           function (err) {
-              if (err) {
-                  console.error('Error creating request:', err.message);
-                  res.status(500).json({ error: 'Failed to create snack request' });
-              } else {
-                  res.status(201).json({
-                      id: this.lastID, 
-                      user_id,
-                      snack, 
-                      drink, 
-                      misc, 
-                      link 
-                  });
-              }
+            if (err) {
+              console.error('Error creating request:', err.message);
+              res.status(500).json({ error: 'Failed to create snack request' });
+            } else {
+              res.status(201).json({
+                id: this.lastID, 
+                user_id,
+                snack, 
+                drink, 
+                misc, 
+                link 
+              });
+            }
           }
-      );
+        );
   } catch (err) {
       console.error(err.message);
       res.status(500).json({ error: 'Failed to create snack request' });
