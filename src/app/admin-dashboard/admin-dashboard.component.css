@@ -201,7 +201,7 @@ h3 {
   font-weight: 700;
   color: var(--primary-color);
   margin-bottom: 0.75rem;
-  white-space: nowrap;
+  
   overflow: hidden;
   text-overflow: ellipsis;
   padding-right: 1rem;
