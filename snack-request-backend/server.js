@@ -5,7 +5,7 @@ const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcrypt'); // For password hashing
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Database Setup
 const db = new sqlite3.Database('snack_requests.db', (err) => {
@@ -69,6 +69,11 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
+
+// Health check endpoint for Heroku
+app.get('/', (req, res) => {
+    res.json({ status: 'ok', message: 'Snackify Backend API is running' });
+});
 
 // Routes
 // Registration Route
