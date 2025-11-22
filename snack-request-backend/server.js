@@ -47,7 +47,24 @@ db.serialize(() => {
 });
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        // Allow localhost for development
+        if (origin.includes('localhost')) return callback(null, true);
+        
+        // Allow all Netlify domains
+        if (origin.endsWith('.netlify.app')) return callback(null, true);
+        
+        // Block all other origins
+        callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // Routes
