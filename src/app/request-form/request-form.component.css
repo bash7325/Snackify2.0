@@ -54,18 +54,20 @@ h3 {
 }
 
 .table-container {
+  overflow-x: auto;
   overflow-y: auto;
   max-height: 500px;
   border-radius: 12px;
   box-shadow: var(--shadow-md);
   margin-bottom: 3rem;
+  width: 100%;
 }
 
 .table {
   margin-bottom: 0;
-}
-
-.table {
+  table-layout: auto;
+  width: max-content;
+  min-width: 100%;
   background-color: var(--card-bg) !important;
 }
 
@@ -76,6 +78,9 @@ h3 {
   background: linear-gradient(135deg, #2b3035 0%, #353a40 100%) !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   color: var(--text-primary) !important;
+  font-size: 0.75rem;
+  padding: 0.5rem;
+  white-space: nowrap;
 }
 
 .table tbody tr {
@@ -86,6 +91,12 @@ h3 {
   color: var(--text-primary) !important;
   vertical-align: middle;
   background-color: transparent !important;
+  font-size: 0.85rem;
+  padding: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
 
 .table td a {

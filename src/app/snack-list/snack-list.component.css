@@ -6,11 +6,19 @@ h1 {
 }
 
 .table-container {
+  overflow-x: auto;
   overflow-y: auto;
   max-height: 600px;
   border-radius: 12px;
   box-shadow: var(--shadow-md);
   margin-bottom: 3rem;
+  width: 100%;
+}
+
+.table {
+  table-layout: auto;
+  width: max-content;
+  min-width: 100%;
 }
 
 .table {
@@ -27,8 +35,10 @@ h1 {
   color: var(--text-primary) !important;
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   letter-spacing: 0.5px;
+  padding: 0.5rem;
+  white-space: nowrap;
 }
 
 .table tbody tr {
@@ -39,6 +49,12 @@ h1 {
   color: var(--text-primary) !important;
   vertical-align: middle;
   background-color: transparent !important;
+  font-size: 0.85rem;
+  padding: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
 
 .table td a {
