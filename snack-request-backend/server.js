@@ -176,7 +176,7 @@ app.post('/api/requests', async (req, res) => {
   app.delete('/api/requests/:id', (req, res) => {
     const requestId = req.params.id;
   
-    db.run('DELETE FROM snack_requests WHERE id = ?', requestId, function(err) {
+    db.run('DELETE FROM snack_requests WHERE id = ?', [requestId], function(err) {
       if (err) {
         console.error('Error deleting request:', err.message);
         res.status(500).json({ error: 'Failed to delete snack request' });
