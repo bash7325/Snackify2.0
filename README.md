@@ -1,6 +1,9 @@
 # 🍕 Snackify 2.0
 
 Snackify is a fun app for devs to request snacks, drinks, and more for the office. Built with Angular + Express.
+<img width="1460" height="1122" alt="image" src="https://github.com/user-attachments/assets/35012fdd-f0f1-4f44-a79a-c4737656776d" />
+<img width="1470" height="828" alt="image" src="https://github.com/user-attachments/assets/84de1bf1-6bd9-4897-9390-8956107c2315" />
+
 
 ## 🚀 Quick Start
 
