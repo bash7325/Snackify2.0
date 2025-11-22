@@ -110,12 +110,16 @@ h3 {
   text-decoration: none;
 }
 
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
 .table tbody tr:hover {
   background-color: rgba(220, 53, 69, 0.15) !important;
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba(255, 255, 255, 0.02) !important;
+.table-striped tbody tr:nth-of-type(odd):hover {
+  background-color: rgba(220, 53, 69, 0.15) !important;
 }
 
 .text-center p {
