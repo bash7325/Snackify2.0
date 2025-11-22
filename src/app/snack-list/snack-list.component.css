@@ -15,14 +15,14 @@ h1 {
 
 .table {
   margin-bottom: 0;
-  background-color: var(--card-bg);
+  background-color: var(--card-bg) !important;
 }
 
 .table th {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: linear-gradient(135deg, #2b3035 0%, #353a40 100%);
+  background: linear-gradient(135deg, #2b3035 0%, #353a40 100%) !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   color: var(--text-primary) !important;
   font-weight: 600;
@@ -31,9 +31,14 @@ h1 {
   letter-spacing: 0.5px;
 }
 
+.table tbody tr {
+  background-color: var(--card-bg) !important;
+}
+
 .table td {
   color: var(--text-primary) !important;
   vertical-align: middle;
+  background-color: transparent !important;
 }
 
 .table td a {
@@ -48,8 +53,12 @@ h1 {
 }
 
 .table tbody tr:hover {
-  background-color: rgba(220, 53, 69, 0.1) !important;
+  background-color: rgba(220, 53, 69, 0.15) !important;
   transform: scale(1.01);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.02) !important;
 }
 
 .loading-container {
