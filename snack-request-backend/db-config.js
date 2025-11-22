@@ -67,6 +67,11 @@ if (isProduction) {
             return pool.query(pgQuery, params, callback);
         },
         get: (text, params, callback) => {
+            // Handle both (query, callback) and (query, params, callback) patterns
+            if (typeof params === 'function') {
+                callback = params;
+                params = [];
+            }
             const pgQuery = convertQuery(text, params);
             pool.query(pgQuery, params, (err, res) => {
                 if (err) return callback(err);
@@ -74,6 +79,11 @@ if (isProduction) {
             });
         },
         all: (text, params, callback) => {
+            // Handle both (query, callback) and (query, params, callback) patterns
+            if (typeof params === 'function') {
+                callback = params;
+                params = [];
+            }
             const pgQuery = convertQuery(text, params);
             pool.query(pgQuery, params, (err, res) => {
                 if (err) return callback(err);
@@ -81,6 +91,11 @@ if (isProduction) {
             });
         },
         run: (text, params, callback) => {
+            // Handle both (query, callback) and (query, params, callback) patterns
+            if (typeof params === 'function') {
+                callback = params;
+                params = [];
+            }
             let pgQuery = convertQuery(text, params);
             
             // If it's an INSERT query without RETURNING, add RETURNING id
