@@ -107,12 +107,23 @@ export class AdminDashboardComponent implements OnInit {
     ).length;
     
     // Top snacks
-    const snackCounts: {[key: string]: number} = {};
+    const snackCounts: {[key: string]: {count: number, display: string}} = {};
+    const normalize = (str: string) => str.toLowerCase().trim().replace(/[.,!\-\s]+/g, ' ').replace(/[^a-z0-9 ]/g, '');
     this.allRequests.forEach(r => {
-      if (r.snack) snackCounts[r.snack] = (snackCounts[r.snack] || 0) + 1;
+      if (r.snack) {
+        const norm = normalize(r.snack);
+        if (!snackCounts[norm]) {
+          snackCounts[norm] = {count: 0, display: r.snack};
+        }
+        snackCounts[norm].count++;
+        // Prefer the longest display name for clarity
+        if (r.snack.length > snackCounts[norm].display.length) {
+          snackCounts[norm].display = r.snack;
+        }
+      }
     });
-    this.stats.topSnacks = Object.entries(snackCounts)
-      .map(([name, count]) => ({name, count}))
+    this.stats.topSnacks = Object.values(snackCounts)
+      .map(({display, count}) => ({name: display, count}))
       .sort((a, b) => b.count - a.count)
       .slice(0, 5);
     
