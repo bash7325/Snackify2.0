@@ -1,6 +1,7 @@
 h1 {
   margin-bottom: 2rem;
   animation: fadeIn 0.6s ease-in;
+  color: var(--text-primary);
 }
 
 .card {
@@ -45,10 +46,11 @@ h2 {
 
 /* Request history section */
 h3 {
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
   margin-top: 3rem;
   margin-bottom: 1.5rem;
   text-align: center;
+  font-weight: 600;
 }
 
 .table-container {
@@ -69,6 +71,27 @@ h3 {
   z-index: 10;
   background: linear-gradient(135deg, #2b3035 0%, #353a40 100%);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: var(--text-primary) !important;
+}
+
+.table td {
+  color: var(--text-primary) !important;
+  vertical-align: middle;
+}
+
+.table td a {
+  color: var(--primary-color) !important;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.table td a:hover {
+  color: #ff6b7a !important;
+  text-decoration: none;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(220, 53, 69, 0.1) !important;
 }
 
 .text-center p {
