@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./snack-request-backend:/app/snack-request-backend
+      - ./snack_requests.db:/app/snack-request-backend/snack_requests.db
+    environment:
+      - NODE_ENV=development
+    networks:
+      - snackify-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    environment:
+      - API_URL=http://backend:3000/api
+    networks:
+      - snackify-network
+    restart: unless-stopped
+
+networks:
+  snackify-network:
+    driver: bridge

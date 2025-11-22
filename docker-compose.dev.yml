@@ -1,0 +1,40 @@
+# Local development docker compose with hot reload
+version: '3.8'
+
+services:
+  backend:
+    image: node:18-alpine
+    working_dir: /app/snack-request-backend
+    command: node server.js
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./snack-request-backend:/app/snack-request-backend
+      - ./package.json:/app/package.json
+      - ./node_modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+    networks:
+      - snackify-network
+    restart: unless-stopped
+
+  frontend:
+    image: node:18-alpine
+    working_dir: /app
+    command: npm start
+    ports:
+      - "4200:4200"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    networks:
+      - snackify-network
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+networks:
+  snackify-network:
+    driver: bridge

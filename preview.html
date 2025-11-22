@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snackify 2.0 - UI Preview</title>
+    <style>
+        /* Global Styles - Modern Dark Theme */
+        :root {
+          --primary-color: #dc3545;
+          --primary-hover: #bb2d3b;
+          --card-bg: #2b3035;
+          --text-primary: #f8f9fa;
+          --text-secondary: #adb5bd;
+          --border-color: #495057;
+          --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+          --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+          --transition: all 0.3s ease;
+        }
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          background: linear-gradient(135deg, #1a1d20 0%, #2b3035 100%);
+          color: var(--text-primary);
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          min-height: 100vh;
+          padding: 2rem;
+        }
+
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          animation: fadeIn 0.6s ease-in;
+        }
+
+        h1 {
+          font-size: 3rem;
+          font-weight: 800;
+          text-align: center;
+          margin-bottom: 3rem;
+          background: linear-gradient(135deg, var(--primary-color), #ff6b7a);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .card {
+          background-color: var(--card-bg);
+          border: 1px solid var(--border-color);
+          border-radius: 12px;
+          box-shadow: var(--shadow-md);
+          padding: 2.5rem;
+          margin-bottom: 2rem;
+          transition: var(--transition);
+        }
+
+        .card:hover {
+          box-shadow: var(--shadow-lg);
+          transform: translateY(-2px);
+        }
+
+        .btn {
+          padding: 0.75rem 1.5rem;
+          border-radius: 8px;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          transition: var(--transition);
+          border: none;
+          cursor: pointer;
+          background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+          color: white;
+          font-size: 1rem;
+          margin: 0.5rem;
+        }
+
+        .btn:hover {
+          background: linear-gradient(135deg, var(--primary-hover) 0%, #991f2a 100%);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-md);
+        }
+
+        .grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 2rem;
+          margin: 2rem 0;
+        }
+
+        .feature {
+          text-align: center;
+        }
+
+        .feature h3 {
+          color: var(--text-primary);
+          margin: 1rem 0;
+        }
+
+        .feature p {
+          color: var(--text-secondary);
+          line-height: 1.6;
+        }
+
+        table {
+          width: 100%;
+          background-color: var(--card-bg);
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: var(--shadow-md);
+          margin: 2rem 0;
+        }
+
+        thead {
+          background: linear-gradient(135deg, #2b3035 0%, #353a40 100%);
+        }
+
+        th {
+          color: var(--text-primary);
+          font-weight: 600;
+          text-transform: uppercase;
+          font-size: 0.85rem;
+          letter-spacing: 0.5px;
+          padding: 1rem;
+          text-align: left;
+        }
+
+        td {
+          color: var(--text-primary);
+          padding: 1rem;
+          border-top: 1px solid var(--border-color);
+        }
+
+        tr:hover {
+          background-color: rgba(220, 53, 69, 0.1);
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .badge {
+          background: linear-gradient(135deg, var(--primary-color), #ff6b7a);
+          color: white;
+          padding: 0.25rem 0.75rem;
+          border-radius: 20px;
+          font-size: 0.875rem;
+          font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍕 Snackify 2.0 - UI Preview</h1>
+        
+        <div class="card">
+            <h2>✨ Modern Design System</h2>
+            <p>Experience the completely redesigned interface with smooth animations, modern gradients, and professional styling.</p>
+            <button class="btn">Get Started</button>
+            <button class="btn">Learn More</button>
+        </div>
+
+        <div class="grid">
+            <div class="feature card">
+                <h3>🎨 Beautiful Dark Theme</h3>
+                <p>Professional gradient backgrounds with carefully selected color palette for optimal readability and visual appeal.</p>
+            </div>
+            <div class="feature card">
+                <h3>💫 Smooth Animations</h3>
+                <p>Elegant fade-in and slide-in effects that bring the interface to life without overwhelming the user experience.</p>
+            </div>
+            <div class="feature card">
+                <h3>📱 Fully Responsive</h3>
+                <p>Optimized for all screen sizes from mobile phones to desktop monitors with fluid layouts.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📊 Enhanced Tables</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Status</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sticky Headers</td>
+                        <td><span class="badge">✓ Active</span></td>
+                        <td>Headers stay visible while scrolling</td>
+                    </tr>
+                    <tr>
+                        <td>Hover Effects</td>
+                        <td><span class="badge">✓ Active</span></td>
+                        <td>Smooth transitions on row hover</td>
+                    </tr>
+                    <tr>
+                        <td>Modern Styling</td>
+                        <td><span class="badge">✓ Active</span></td>
+                        <td>Professional gradient backgrounds</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card" style="text-align: center;">
+            <h2>🚀 Ready to See the Full App?</h2>
+            <p style="margin: 1.5rem 0; color: var(--text-secondary);">
+                Once dependencies are installed, run:<br>
+                <code style="background: #1a1d20; padding: 0.5rem 1rem; border-radius: 6px; display: inline-block; margin-top: 1rem;">
+                    npm start
+                </code>
+            </p>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                The app will be available at <strong>http://localhost:4200</strong>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

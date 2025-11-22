@@ -1,0 +1,10 @@
+npm info using npm@11.6.2
+npm info using node@v25.2.1
+npm http fetch GET https://registry.npmjs.org/@angular%2fanimations attempt 1 failed with UNABLE_TO_GET_ISSUER_CERT_LOCALLY
+npm http fetch GET https://registry.npmjs.org/@angular%2fanimations attempt 2 failed with UNABLE_TO_GET_ISSUER_CERT_LOCALLY
+npm http fetch GET https://registry.npmjs.org/@angular%2fanimations attempt 3 failed with UNABLE_TO_GET_ISSUER_CERT_LOCALLY
+npm http fetch GET https://registry.npmjs.org/@angular%2fcommon attempt 1 failed with UNABLE_TO_GET_ISSUER_CERT_LOCALLY
+npm http fetch GET https://registry.npmjs.org/@angular%2fcommon attempt 2 failed with UNABLE_TO_GET_ISSUER_CERT_LOCALLY
+npm http fetch GET https://registry.npmjs.org/@angular%2fcommon attempt 3 failed with UNABLE_TO_GET_ISSUER_CERT_LOCALLY
+npm http fetch GET https://registry.npmjs.org/@angular%2fcompiler attempt 1 failed with UNABLE_TO_GET_ISSUER_CERT_LOCALLY
+npm http fetch GET https://registry.npmjs.org/@angular%2fcompiler attempt 2 failed with UNABLE_TO_GET_ISSUER_CERT_LOCALLY

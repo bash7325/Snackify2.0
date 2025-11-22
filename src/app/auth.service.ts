@@ -4,12 +4,13 @@ import { Observable, of, tap } from 'rxjs';
 import { User } from './user'; 
 import { map } from 'rxjs';
 import { switchMap } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://snackify-backend-c8a799790919.herokuapp.com/api';// Replace with MY actual API endpoint when I have it
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

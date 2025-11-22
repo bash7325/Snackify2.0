@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SnackRequest } from './snack-request'; 
+import { SnackRequest } from './snack-request';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SnackRequestService {
-private apiUrl = 'https://snackify-backend-c8a799790919.herokuapp.com/api/requests';
+private apiUrl = `${environment.apiUrl}/requests`;
 
   constructor(private http: HttpClient) { }
 
