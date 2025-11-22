@@ -197,16 +197,23 @@ h3 {
   margin-top: 0.25rem;
 }
 
+/* Improved stats card layout */
 .stat-list h6 {
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 1rem;
 }
 
 .top-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  margin-top: 0.5rem;
 }
 
 .top-list li {
@@ -215,6 +222,8 @@ h3 {
   padding: 0.5rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
+  align-items: center;
+  min-height: 2rem;
 }
 
 .top-list li:last-child {
@@ -226,12 +235,19 @@ h3 {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
 }
 
 .item-count {
   font-weight: 600;
   color: var(--primary-color);
   margin-left: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ff3b3b;
+  margin-left: 1.5rem;
 }
 
 /* Filters */
@@ -328,6 +344,23 @@ h3 {
 
   .filters-bar .row {
     flex-direction: column;
+  }
+
+  .stat-card.stat-list {
+    min-height: 120px;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  .stat-card.stat-list h6 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+  .stat-card.stat-list .item-name {
+    font-size: 0.95rem;
+  }
+  .stat-card.stat-list .item-count {
+    font-size: 1rem;
+    margin-left: 1rem;
   }
 }
 
