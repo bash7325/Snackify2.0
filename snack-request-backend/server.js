@@ -53,13 +53,16 @@ const corsOptions = {
         if (!origin) return callback(null, true);
         
         // Allow localhost for development
-        if (origin.includes('localhost')) return callback(null, true);
+        if (origin && origin.includes('localhost')) return callback(null, true);
         
         // Allow all Netlify domains
-        if (origin.endsWith('.netlify.app')) return callback(null, true);
+        if (origin && origin.endsWith('.netlify.app')) return callback(null, true);
         
-        // Block all other origins
-        callback(new Error('Not allowed by CORS'));
+        // Allow AWS Amplify domains (if still using it)
+        if (origin && origin.includes('amplifyapp.com')) return callback(null, true);
+        
+        // For development/testing, allow all origins (remove this in production if you want strict CORS)
+        callback(null, true);
     },
     credentials: true,
     optionsSuccessStatus: 200
