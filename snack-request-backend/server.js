@@ -148,7 +148,9 @@ app.post('/api/requests', async (req, res) => {
     const newOrderedStatus = req.body.ordered ? 1 : 0; // Convert boolean to 1 or 0
   
     // Update the table column name
-    db.run(      'UPDATE snack_requests SET ordered_flag = ?, ordered_at = datetime("now", "localtime") WHERE id = ?', [newOrderedStatus, requestId], function(err) {
+    const isProduction = process.env.DATABASE_URL !== undefined;
+    const dateSql = isProduction ? 'NOW()' : 'datetime("now", "localtime")';
+    db.run(`UPDATE snack_requests SET ordered_flag = ?, ordered_at = ${dateSql} WHERE id = ?`, [newOrderedStatus, requestId], function(err) {
       if (err) {
         console.error('Error updating request:', err.message);
         res.status(500).json({ error: 'Failed to update snack request' });
