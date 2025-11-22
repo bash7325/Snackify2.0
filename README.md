@@ -1,6 +1,6 @@
 # 🍕 Snackify 2.0
 
-Snackify is a fun app for devs to request snacks, drinks, and more for the office. Built with Angular + Express.
+Snackify is an app for devs to request snacks, drinks, and more for the office. Built with Angular + Express.
 <img width="1460" height="1122" alt="image" src="https://github.com/user-attachments/assets/35012fdd-f0f1-4f44-a79a-c4737656776d" />
 <img width="1470" height="828" alt="image" src="https://github.com/user-attachments/assets/84de1bf1-6bd9-4897-9390-8956107c2315" />
 
@@ -42,8 +42,7 @@ Snackify is a fun app for devs to request snacks, drinks, and more for the offic
 
 ## 🛠️ Dev Tips
 - If you get DB errors, delete `snack_requests.db` and restart backend
-- Update `src/environments/environment.prod.ts` for your backend URL if deploying
 - Netlify deploys frontend from GitHub, Heroku deploys backend
 
 ---
-Made with ❤️ and 🍕 by Brandon & friends
+Made with ❤️ and 🍕 by Brandon Ashby
