@@ -11,11 +11,15 @@ export class AppComponent {
   constructor(public authService: AuthService, private router: Router) {} 
 
 
-  
   logout() {
     this.authService.logout();
     console.log('Logged out:', this.authService.isLoggedIn());
     this.router.navigate(['/']);
   }
-  
+
+  navbarOpen = false;
+
+  toggleNavbar() {
+    this.navbarOpen = !this.navbarOpen;
+  }
 }

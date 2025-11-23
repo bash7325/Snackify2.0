@@ -1,29 +1,29 @@
 <header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark snack-navbar" aria-label="Main navigation">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        <img src="assets/snackicon.jpg" alt="Snackify Logo" width="50" height="50" class="d-inline-block align-top me-2"> 
+      <a class="navbar-brand d-flex align-items-center" routerLink="/">
+        <img src="assets/snackicon.jpg" alt="Snackify Logo" width="36" height="36" class="me-2 rounded-circle" />
         Snackify
       </a>
 
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item" *ngIf="!authService.isLoggedIn()"> 
-          <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
-        </li>
-        <li class="nav-item" *ngIf="authService.isLoggedIn()">
-          <a class="nav-link" routerLink="/request" routerLinkActive="active">Request Snacks</a>
-        </li>
-        <li class="nav-item" *ngIf="authService.isAdmin() | async">
-          <a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin Dashboard</a>
-        </li>
-        <li class="nav-item" *ngIf="authService.isLoggedIn()">
-          <a class="nav-link" routerLink="/snack-list" routerLinkActive="active">Snack List</a>
-       </li>       
-        <li class="nav-item" *ngIf="authService.isLoggedIn()">
-          <a class="nav-link logout-link" (click)="logout()">Logout</a> 
-       </li>
-       
-      </ul>
+      <button class="navbar-toggler" type="button" (click)="toggleNavbar()" [attr.aria-expanded]="navbarOpen" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse" [ngClass]="{'show': navbarOpen, 'collapse': true}" id="snackNavbar">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" routerLink="/" routerLinkActive="active">Home</a></li>
+          <li class="nav-item" *ngIf="authService.isLoggedIn()"><a class="nav-link" routerLink="/request" routerLinkActive="active">Request Snack</a></li>
+          <li class="nav-item" *ngIf="authService.isLoggedIn()"><a class="nav-link" routerLink="/snack-list" routerLinkActive="active">Snack List</a></li>
+          <li class="nav-item" *ngIf="authService.isAdmin() | async"><a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin Dashboard</a></li>
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item" *ngIf="!authService.isLoggedIn()"><a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a></li>
+          <li class="nav-item" *ngIf="!authService.isLoggedIn()"><a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a></li>
+          <li class="nav-item" *ngIf="authService.isLoggedIn()">
+            <a class="nav-link logout-link" (click)="logout()">Logout</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
 </header>
