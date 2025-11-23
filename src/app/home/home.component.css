@@ -18,6 +18,12 @@ h1 {
   padding: 0 1rem;
 }
 
+.col-md-5 {
+  width: 90% !important;
+  min-width: 0 !important;
+  padding: 1rem !important;
+}
+
 .border {
   border: 2px solid var(--border-color) !important;
   background: linear-gradient(135deg, rgba(43, 48, 53, 0.8), rgba(26, 29, 32, 0.9));
@@ -37,6 +43,7 @@ h1 {
 
 .p-4 {
   padding: 2.5rem !important;
+  padding: 1.2rem !important;
 }
 
 h3 {
@@ -85,4 +92,13 @@ img {
     margin-top: 1.5rem;
   }
 }
-  
+
+/* Add horizontal spacing between cards only on large screens */
+@media (min-width: 768px) {
+  .home-card-space {
+    margin-right: 2rem;
+  }
+  .home-card-space:last-child {
+    margin-right: 0;
+  }
+}
