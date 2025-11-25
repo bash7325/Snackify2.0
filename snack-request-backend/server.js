@@ -222,6 +222,98 @@ app.post('/api/login', async (req, res) => {
 });
 
 
+// User Management Routes (Admin only)
+// Get all users
+app.get('/api/users', async (req, res) => {
+    try {
+        const users = await new Promise((resolve, reject) => {
+            db.all('SELECT id, username, name, role FROM users ORDER BY name', (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        });
+        res.json(users);
+    } catch (err) {
+        console.error('Error fetching users:', err.message);
+        res.status(500).json({ error: 'Failed to fetch users' });
+    }
+});
+
+// Update user details (name, role)
+app.put('/api/users/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const { name, role } = req.body;
+
+        await new Promise((resolve, reject) => {
+            db.run('UPDATE users SET name = ?, role = ? WHERE id = ?', [name, role, userId], function(err) {
+                if (err) reject(err);
+                else resolve(this.changes);
+            });
+        });
+
+        res.json({ message: 'User updated successfully' });
+    } catch (err) {
+        console.error('Error updating user:', err.message);
+        res.status(500).json({ error: 'Failed to update user' });
+    }
+});
+
+// Reset user password (Admin only)
+app.put('/api/users/:id/reset-password', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const { newPassword } = req.body;
+
+        if (!newPassword || newPassword.length < 4) {
+            return res.status(400).json({ error: 'Password must be at least 4 characters' });
+        }
+
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+        await new Promise((resolve, reject) => {
+            db.run('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, userId], function(err) {
+                if (err) reject(err);
+                else resolve(this.changes);
+            });
+        });
+
+        res.json({ message: 'Password reset successfully' });
+    } catch (err) {
+        console.error('Error resetting password:', err.message);
+        res.status(500).json({ error: 'Failed to reset password' });
+    }
+});
+
+// Delete user
+app.delete('/api/users/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        // First delete all snack requests by this user
+        await new Promise((resolve, reject) => {
+            db.run('DELETE FROM snack_requests WHERE user_id = ?', [userId], function(err) {
+                if (err) reject(err);
+                else resolve(this.changes);
+            });
+        });
+
+        // Then delete the user
+        await new Promise((resolve, reject) => {
+            db.run('DELETE FROM users WHERE id = ?', [userId], function(err) {
+                if (err) reject(err);
+                else resolve(this.changes);
+            });
+        });
+
+        res.json({ message: 'User deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting user:', err.message);
+        res.status(500).json({ error: 'Failed to delete user' });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
