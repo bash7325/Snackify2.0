@@ -41,3 +41,15 @@
   .navbar-brand { font-size: 1.1rem; }
   .navbar-nav .nav-link { margin-right: 0; padding: 0.5rem 0.7rem; }
 }
+
+/* Footer styles to match navbar theme */
+.footer {
+  background: linear-gradient(135deg, #23272b 0%, #343a40 100%) !important;
+  border-top: 2px solid var(--primary-color, #ff3b3b);
+  box-shadow: 0 -4px 16px rgba(220, 53, 69, 0.12);
+  color: #fff !important;
+}
+
+.footer .text-muted {
+  color: rgba(255, 255, 255, 0.7) !important;
+}

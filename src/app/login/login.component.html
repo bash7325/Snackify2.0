@@ -3,6 +3,10 @@
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="card p-4 mt-5">
       <h2 class="text-center mb-4">Login</h2>
 
+      <div *ngIf="successMessage" class="alert alert-success" role="alert">
+        {{ successMessage }}
+      </div>
+
       <div class="mb-3">
         <label for="username" class="form-label">Username:</label>
         <input type="text" class="form-control" id="username" formControlName="username" required>
