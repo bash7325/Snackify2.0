@@ -225,13 +225,21 @@ app.post('/api/login', async (req, res) => {
 // User Management Routes (Admin only)
 // Get all users
 app.get('/api/users', async (req, res) => {
+    console.log('GET /api/users endpoint hit');
     try {
         const users = await new Promise((resolve, reject) => {
+            console.log('Executing query: SELECT id, username, name, role FROM users ORDER BY name');
             db.all('SELECT id, username, name, role FROM users ORDER BY name', (err, rows) => {
-                if (err) reject(err);
-                else resolve(rows);
+                if (err) {
+                    console.error('Query error:', err);
+                    reject(err);
+                } else {
+                    console.log('Query returned rows:', rows);
+                    resolve(rows);
+                }
             });
         });
+        console.log('Sending response with users:', users);
         res.json(users);
     } catch (err) {
         console.error('Error fetching users:', err.message);

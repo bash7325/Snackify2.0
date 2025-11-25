@@ -116,11 +116,13 @@ if (isProduction) {
     };
 } else {
     // Use SQLite locally
-    db = new sqlite3.Database('snack_requests.db', (err) => {
+    const path = require('path');
+    const dbPath = path.join(__dirname, 'snack_requests.db');
+    db = new sqlite3.Database(dbPath, (err) => {
         if (err) {
             console.error(err.message);
         }
-        console.log('Connected to the snack_requests database.');
+        console.log('Connected to the snack_requests database at:', dbPath);
     });
 
     db.serialize(() => {
