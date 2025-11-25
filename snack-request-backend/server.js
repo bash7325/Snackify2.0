@@ -7,23 +7,28 @@ const { db, isProduction } = require('./db-config');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware - Simplified CORS to allow all origins
-app.use(cors({
-    origin: '*',
+// Middleware
+const corsOptions = {
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        // Allow localhost for development
+        if (origin && origin.includes('localhost')) return callback(null, true);
+        
+        // Allow all Netlify domains
+        if (origin && origin.endsWith('.netlify.app')) return callback(null, true);
+        
+        // Allow AWS Amplify domains (if still using it)
+        if (origin && origin.includes('amplifyapp.com')) return callback(null, true);
+        
+        // For development/testing, allow all origins (remove this in production if you want strict CORS)
+        callback(null, true);
+    },
     credentials: true,
-    optionsSuccessStatus: 200,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-// Explicit handler for preflight OPTIONS requests
-app.options('*', (req, res) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.sendStatus(204);
-});
-
+    optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // Health check endpoint for Heroku
