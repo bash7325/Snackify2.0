@@ -8,8 +8,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(public authService: AuthService, private router: Router) {} 
+  navbarOpen = false;
+  helpModalOpen = false;
 
+  constructor(public authService: AuthService, private router: Router) {} 
 
   logout() {
     this.authService.logout();
@@ -17,9 +19,15 @@ export class AppComponent {
     this.router.navigate(['/']);
   }
 
-  navbarOpen = false;
-
   toggleNavbar() {
     this.navbarOpen = !this.navbarOpen;
+  }
+
+  showHelpModal() {
+    this.helpModalOpen = true;
+  }
+
+  closeHelpModal() {
+    this.helpModalOpen = false;
   }
 }

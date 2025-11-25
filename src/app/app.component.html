@@ -17,6 +17,9 @@
           <li class="nav-item" *ngIf="authService.isAdmin() | async"><a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin Dashboard</a></li>
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item" *ngIf="authService.isLoggedIn()">
+            <a class="nav-link" (click)="showHelpModal()" style="cursor: pointer;">❓ Help</a>
+          </li>
           <li class="nav-item" *ngIf="!authService.isLoggedIn()"><a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a></li>
           <li class="nav-item" *ngIf="!authService.isLoggedIn()"><a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a></li>
           <li class="nav-item" *ngIf="authService.isLoggedIn()">
@@ -37,3 +40,32 @@
     <small class="text-muted">Made with ❤️ for JW by Ashby</small>
   </div>
 </footer>
+
+<!-- Help Modal -->
+<div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true" [class.show]="helpModalOpen" [style.display]="helpModalOpen ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background: linear-gradient(135deg, #23272b 0%, #343a40 100%); color: #fff; border: 2px solid #ff3b3b;">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(255, 59, 59, 0.3);">
+        <h5 class="modal-title" id="helpModalLabel" style="color: #fff;">❓ Need Help?</h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeHelpModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h6 class="mb-3" style="color: #ff3b3b;">📞 Forgot Password? Need to update your name?</h6>
+        <p class="mb-4" style="color: rgba(255, 255, 255, 0.9);">
+          For help with <strong style="color: #fff;">changing your password</strong> or <strong style="color: #fff;">updating your display name</strong>, 
+          please contact <strong style="color: #ff3b3b;">Colleen or Amber on Teams</strong>.
+        </p>
+        <hr style="border-color: rgba(255, 59, 59, 0.3);">
+        <h6 class="mb-3" style="color: #ff3b3b;">💡 Quick Tips</h6>
+        <ul style="color: rgba(255, 255, 255, 0.9);">
+          <li>Use the <strong style="color: #fff;">Request Snack</strong> page to submit new snack requests</li>
+          <li>Check the <strong style="color: #fff;">Snack List</strong> to view everyone's requests</li>
+        </ul>
+      </div>
+      <div class="modal-footer" style="border-top: 1px solid rgba(255, 59, 59, 0.3);">
+        <button type="button" class="btn btn-danger" (click)="closeHelpModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="helpModalOpen" *ngIf="helpModalOpen" (click)="closeHelpModal()" style="background-color: rgba(0, 0, 0, 0.7);"></div>
