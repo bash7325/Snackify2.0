@@ -31,6 +31,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
+// Explicit handler for preflight OPTIONS requests
+app.options('*', cors(corsOptions));
+
 // Health check endpoint for Heroku
 app.get('/', (req, res) => {
     res.json({ status: 'ok', message: 'Snackify Backend API is running' });
