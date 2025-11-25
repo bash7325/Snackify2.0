@@ -29,6 +29,10 @@ const corsOptions = {
     optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
+
+// Handle preflight requests explicitly
+app.options('*', cors(corsOptions));
+
 app.use(bodyParser.json());
 
 // Health check endpoint for Heroku

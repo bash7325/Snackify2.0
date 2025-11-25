@@ -1,0 +1,150 @@
+Server listening at http://localhost:3000
+Connected to the snack_requests database at: /Users/brandonashby/Snackify2.0/snack-request-backend/snack_requests.db
+GET /api/users endpoint hit
+Executing query: SELECT id, username, name, role FROM users ORDER BY name
+Query returned rows: [
+  { id: 2, username: 'AmberAdmin', name: 'Amber Lloyd', role: 'Admin' },
+  { id: 4, username: 'Brandon', name: 'Brandon', role: null },
+  {
+    id: 1,
+    username: 'ColleenAdmin',
+    name: 'Colleen Cowley',
+    role: 'Admin'
+  },
+  { id: 3, username: 'test', name: 'test', role: null }
+]
+Sending response with users: [
+  { id: 2, username: 'AmberAdmin', name: 'Amber Lloyd', role: 'Admin' },
+  { id: 4, username: 'Brandon', name: 'Brandon', role: null },
+  {
+    id: 1,
+    username: 'ColleenAdmin',
+    name: 'Colleen Cowley',
+    role: 'Admin'
+  },
+  { id: 3, username: 'test', name: 'test', role: null }
+]
+GET /api/users endpoint hit
+Executing query: SELECT id, username, name, role FROM users ORDER BY name
+Query returned rows: [
+  { id: 2, username: 'AmberAdmin', name: 'Amber Lloyd', role: 'Admin' },
+  { id: 4, username: 'Brandon', name: 'Brandon', role: null },
+  {
+    id: 1,
+    username: 'ColleenAdmin',
+    name: 'Colleen Cowley',
+    role: 'Admin'
+  },
+  { id: 3, username: 'test', name: 'test', role: null }
+]
+Sending response with users: [
+  { id: 2, username: 'AmberAdmin', name: 'Amber Lloyd', role: 'Admin' },
+  { id: 4, username: 'Brandon', name: 'Brandon', role: null },
+  {
+    id: 1,
+    username: 'ColleenAdmin',
+    name: 'Colleen Cowley',
+    role: 'Admin'
+  },
+  { id: 3, username: 'test', name: 'test', role: null }
+]
+GET /api/users endpoint hit
+Executing query: SELECT id, username, name, role FROM users ORDER BY name
+Query returned rows: [
+  { id: 2, username: 'AmberAdmin', name: 'Amber Lloyd', role: 'Admin' },
+  { id: 4, username: 'Brandon', name: 'Brandon', role: null },
+  {
+    id: 1,
+    username: 'ColleenAdmin',
+    name: 'Colleen Cowley',
+    role: 'Admin'
+  }
+]
+Sending response with users: [
+  { id: 2, username: 'AmberAdmin', name: 'Amber Lloyd', role: 'Admin' },
+  { id: 4, username: 'Brandon', name: 'Brandon', role: null },
+  {
+    id: 1,
+    username: 'ColleenAdmin',
+    name: 'Colleen Cowley',
+    role: 'Admin'
+  }
+]
+GET /api/users endpoint hit
+Executing query: SELECT id, username, name, role FROM users ORDER BY name
+Query returned rows: [
+  { id: 2, username: 'AmberAdmin', name: 'Amber Lloyd', role: 'Admin' },
+  { id: 4, username: 'Brandon', name: 'Brandon', role: null },
+  {
+    id: 1,
+    username: 'ColleenAdmin',
+    name: 'Colleen Cowley',
+    role: 'Admin'
+  }
+]
+Sending response with users: [
+  { id: 2, username: 'AmberAdmin', name: 'Amber Lloyd', role: 'Admin' },
+  { id: 4, username: 'Brandon', name: 'Brandon', role: null },
+  {
+    id: 1,
+    username: 'ColleenAdmin',
+    name: 'Colleen Cowley',
+    role: 'Admin'
+  }
+]
+GET /api/users endpoint hit
+Executing query: SELECT id, username, name, role FROM users ORDER BY name
+Query returned rows: [
+  { id: 5, username: 'admin', name: 'Admin User', role: 'Admin' },
+  { id: 2, username: 'AmberAdmin', name: 'Amber Lloyd', role: 'Admin' },
+  { id: 4, username: 'Brandon', name: 'Brandon', role: null },
+  {
+    id: 1,
+    username: 'ColleenAdmin',
+    name: 'Colleen Cowley',
+    role: 'Admin'
+  }
+]
+Sending response with users: [
+  { id: 5, username: 'admin', name: 'Admin User', role: 'Admin' },
+  { id: 2, username: 'AmberAdmin', name: 'Amber Lloyd', role: 'Admin' },
+  { id: 4, username: 'Brandon', name: 'Brandon', role: null },
+  {
+    id: 1,
+    username: 'ColleenAdmin',
+    name: 'Colleen Cowley',
+    role: 'Admin'
+  }
+]
+Received snack request: {
+  user_id: 5,
+  snack: 'Fish',
+  drink: '',
+  misc: '',
+  link: '',
+  keep_on_hand: 0
+}
+GET /api/users endpoint hit
+Executing query: SELECT id, username, name, role FROM users ORDER BY name
+Query returned rows: [
+  { id: 5, username: 'admin', name: 'Admin User', role: 'Admin' },
+  { id: 2, username: 'AmberAdmin', name: 'Amber Lloyd', role: 'Admin' },
+  { id: 4, username: 'Brandon', name: 'Brandon', role: null },
+  {
+    id: 1,
+    username: 'ColleenAdmin',
+    name: 'Colleen Cowley',
+    role: 'Admin'
+  }
+]
+Sending response with users: [
+  { id: 5, username: 'admin', name: 'Admin User', role: 'Admin' },
+  { id: 2, username: 'AmberAdmin', name: 'Amber Lloyd', role: 'Admin' },
+  { id: 4, username: 'Brandon', name: 'Brandon', role: null },
+  {
+    id: 1,
+    username: 'ColleenAdmin',
+    name: 'Colleen Cowley',
+    role: 'Admin'
+  }
+]
