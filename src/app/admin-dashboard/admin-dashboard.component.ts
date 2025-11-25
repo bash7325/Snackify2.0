@@ -10,7 +10,7 @@ interface Stats {
   totalKeepOnHand: number;
   orderedThisWeek: number;
   orderedThisMonth: number;
-  topSnacks: {name: string, count: number}[];
+  topSnacks: {name: string, count: number, variants?: string[]}[];
   topUsers: {name: string, count: number}[];
   avgDaysToOrder: number;
 }
@@ -118,24 +118,111 @@ export class AdminDashboardComponent implements OnInit {
       r.ordered_at && new Date(r.ordered_at) >= monthAgo
     ).length;
     
-    // Top snacks
-    const snackCounts: {[key: string]: {count: number, display: string}} = {};
-    const normalize = (str: string) => str.toLowerCase().trim().replace(/[.,!\-\s]+/g, ' ').replace(/[^a-z0-9 ]/g, '');
+    // Top snacks with fuzzy matching
+    const snackCounts: {[key: string]: {count: number, variants: string[]}} = {};
+    
+    // Categorize snacks using smart keyword extraction
+    const categorizeSnack = (snack: string): string => {
+      const lower = snack.toLowerCase().trim();
+      
+      // Common brand/category mappings
+      const categories: {[key: string]: string[]} = {
+        'Pop Tarts': ['pop tart', 'poptart', 'pop-tart'],
+        'Cheez-Its': ['cheez it', 'cheezit', 'cheez-it', 'cheese it'],
+        'Goldfish': ['goldfish', 'gold fish'],
+        'Oreos': ['oreo'],
+        'Chips Ahoy': ['chips ahoy', 'chip ahoy'],
+        'Doritos': ['dorito'],
+        'Cheetos': ['cheeto', 'hot cheeto', 'flamin hot'],
+        'Fritos': ['frito'],
+        'Lays': ['lay chip', 'lays chip'],
+        'Pringles': ['pringle'],
+        'Ritz': ['ritz cracker'],
+        'Wheat Thins': ['wheat thin'],
+        'Triscuits': ['triscuit'],
+        'Snickers': ['snicker'],
+        'M&Ms': ['m&m', 'mnm', 'm and m'],
+        'Reeses': ['reese', 'reeses', 'peanut butter cup'],
+        'Kit Kat': ['kit kat', 'kitkat'],
+        'Twix': ['twix'],
+        'Skittles': ['skittle'],
+        'Starburst': ['starburst', 'star burst'],
+        'Granola Bars': ['granola bar', 'nature valley'],
+        'Protein Bars': ['protein bar', 'cliff bar', 'clif bar', 'quest bar'],
+        'Rice Krispies': ['rice krispie', 'rice crispy'],
+        'Fruit Snacks': ['fruit snack', 'gusher', 'fruit roll'],
+        'Nutri-Grain': ['nutri grain', 'nutrigrain'],
+        'Crackers': ['cracker', 'saltine'],
+        'Pretzels': ['pretzel'],
+        'Popcorn': ['popcorn', 'pop corn'],
+        'Trail Mix': ['trail mix', 'mixed nut'],
+        'Peanuts': ['peanut', 'planter'],
+        'Almonds': ['almond'],
+        'Cashews': ['cashew'],
+        'Cookies': ['cookie', 'chocolate chip cookie'],
+        'Brownies': ['brownie', 'cosmic brownie'],
+        'Muffins': ['muffin'],
+        'Donuts': ['donut', 'doughnut', 'krispy kreme'],
+        'Candy Bars': ['candy bar', 'chocolate bar'],
+        'Gum': ['gum', 'chewing gum'],
+        'Mints': ['mint', 'tic tac', 'altoid']
+      };
+      
+      // Check if snack matches any category
+      for (const [category, keywords] of Object.entries(categories)) {
+        for (const keyword of keywords) {
+          if (lower.includes(keyword)) {
+            return category;
+          }
+        }
+      }
+      
+      // If no match, extract the main noun (remove flavors/adjectives)
+      // Remove common flavor words
+      const flavorWords = ['cherry', 'strawberry', 'blueberry', 'chocolate', 'vanilla', 
+                          'caramel', 'peanut butter', 'bbq', 'sour cream', 'ranch', 
+                          'cheddar', 'nacho', 'cool ranch', 'spicy', 'hot', 'mild',
+                          'original', 'classic', 'honey', 'sweet', 'salty', 'extra',
+                          'double', 'triple', 'mega', 'mini', 'family size'];
+      
+      let cleaned = lower;
+      flavorWords.forEach(flavor => {
+        cleaned = cleaned.replace(new RegExp('\\b' + flavor + '\\b', 'gi'), '').trim();
+      });
+      
+      // Remove multiple spaces and capitalize first letter of each word
+      cleaned = cleaned.replace(/\s+/g, ' ').trim();
+      if (cleaned) {
+        return cleaned.split(' ').map(word => 
+          word.charAt(0).toUpperCase() + word.slice(1)
+        ).join(' ');
+      }
+      
+      // Fallback to original capitalized
+      return snack.charAt(0).toUpperCase() + snack.slice(1);
+    };
+    
     this.allRequests.forEach(r => {
       if (r.snack) {
-        const norm = normalize(r.snack);
-        if (!snackCounts[norm]) {
-          snackCounts[norm] = {count: 0, display: r.snack};
+        const category = categorizeSnack(r.snack);
+        if (!snackCounts[category]) {
+          snackCounts[category] = {count: 0, variants: []};
         }
-        snackCounts[norm].count++;
-        // Prefer the longest display name for clarity
-        if (r.snack.length > snackCounts[norm].display.length) {
-          snackCounts[norm].display = r.snack;
+        snackCounts[category].count++;
+        // Track unique variants (case-insensitive)
+        const lowerVariant = r.snack.toLowerCase();
+        if (!snackCounts[category].variants.some(v => v.toLowerCase() === lowerVariant)) {
+          snackCounts[category].variants.push(r.snack);
         }
       }
     });
-    this.stats.topSnacks = Object.values(snackCounts)
-      .map(({display, count}) => ({name: display, count}))
+    
+    this.stats.topSnacks = Object.entries(snackCounts)
+      .map(([name, {count, variants}]) => ({
+        name, 
+        count, 
+        variants: variants.length > 1 ? variants.slice(0, 3) : undefined
+      }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 5);
     

@@ -65,8 +65,15 @@
             <h6>🔥 Top Requested Snacks</h6>
             <ul class="top-list">
               <li *ngFor="let item of stats.topSnacks">
-                <span class="item-name">{{ item.name }}</span>
-                <span class="item-count">{{ item.count }}</span>
+                <div class="d-flex justify-content-between align-items-start w-100">
+                  <div class="flex-grow-1">
+                    <span class="item-name">{{ item.name }}</span>
+                    <div *ngIf="item.variants && item.variants.length > 0" style="font-size: 0.75rem; margin-top: 2px; color: #666;">
+                      {{ item.variants.join(', ') }}
+                    </div>
+                  </div>
+                  <span class="item-count">{{ item.count }}</span>
+                </div>
               </li>
               <li *ngIf="stats.topSnacks.length === 0" class="text-muted">No data yet</li>
             </ul>
