@@ -55,5 +55,22 @@ export class AuthService {
       map(user => !!user && user.role === 'Admin')        // Strict equality check for 'Admin'
     );
   }
+
+  // User Management Methods (Admin only)
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/users`);
+  }
+
+  updateUser(userId: number, userData: {name: string, role: string}): Observable<any> {
+    return this.http.put(`${this.apiUrl}/users/${userId}`, userData);
+  }
+
+  resetUserPassword(userId: number, newPassword: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/users/${userId}/reset-password`, { newPassword });
+  }
+
+  deleteUser(userId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/users/${userId}`);
+  }
   
 }

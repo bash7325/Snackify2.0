@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SnackRequestService } from '../snack-request.service';
 import { SnackRequest } from '../snack-request';
+import { AuthService } from '../auth.service';
+import { User } from '../user';
 
 interface Stats {
   totalPending: number;
@@ -47,7 +49,7 @@ export class AdminDashboardComponent implements OnInit {
   orderedSortDirection: 'asc' | 'desc' = 'desc';
   
   // UI state
-  activeTab: 'pending' | 'ordered' | 'keepOnHand' = 'pending';
+  activeTab: 'pending' | 'ordered' | 'keepOnHand' | 'users' = 'pending';
   showStats = true;
   undoStack: {request: SnackRequest, action: string}[] = [];
   
@@ -63,7 +65,17 @@ export class AdminDashboardComponent implements OnInit {
     avgDaysToOrder: 0
   };
 
-  constructor(private snackRequestService: SnackRequestService) {}
+  // User Management
+  users: User[] = [];
+  filteredUsers: User[] = [];
+  editingUser: User | null = null;
+  resettingPasswordUser: User | null = null;
+  newPassword = '';
+
+  constructor(
+    private snackRequestService: SnackRequestService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.loadData();
@@ -435,5 +447,95 @@ export class AdminDashboardComponent implements OnInit {
     const now = new Date();
     const diffDays = (now.getTime() - requestDate.getTime()) / (1000 * 60 * 60 * 24);
     return diffDays > days;
+  }
+
+  // User Management Methods
+  loadUsers() {
+    this.loading = true;
+    this.authService.getAllUsers().subscribe({
+      next: (users) => {
+        this.users = users;
+        this.filteredUsers = users;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error loading users:', err);
+        this.error = 'Failed to load users';
+        this.loading = false;
+      }
+    });
+  }
+
+  editUser(user: User) {
+    this.editingUser = { ...user };
+  }
+
+  saveUser() {
+    if (!this.editingUser) return;
+    
+    this.authService.updateUser(this.editingUser.id!, {
+      name: this.editingUser.name!,
+      role: this.editingUser.role!
+    }).subscribe({
+      next: () => {
+        this.editingUser = null;
+        this.loadUsers();
+        alert('User updated successfully');
+      },
+      error: (err) => {
+        console.error('Error updating user:', err);
+        alert('Failed to update user');
+      }
+    });
+  }
+
+  cancelEdit() {
+    this.editingUser = null;
+  }
+
+  promptResetPassword(user: User) {
+    this.resettingPasswordUser = user;
+    this.newPassword = '';
+  }
+
+  resetPassword() {
+    if (!this.resettingPasswordUser || !this.newPassword) return;
+    
+    if (this.newPassword.length < 4) {
+      alert('Password must be at least 4 characters');
+      return;
+    }
+
+    this.authService.resetUserPassword(this.resettingPasswordUser.id!, this.newPassword).subscribe({
+      next: () => {
+        alert(`Password reset successfully for ${this.resettingPasswordUser!.name}`);
+        this.resettingPasswordUser = null;
+        this.newPassword = '';
+      },
+      error: (err) => {
+        console.error('Error resetting password:', err);
+        alert('Failed to reset password');
+      }
+    });
+  }
+
+  cancelResetPassword() {
+    this.resettingPasswordUser = null;
+    this.newPassword = '';
+  }
+
+  deleteUserConfirm(user: User) {
+    if (confirm(`Are you sure you want to delete user "${user.name}"? This will also delete all their snack requests.`)) {
+      this.authService.deleteUser(user.id!).subscribe({
+        next: () => {
+          this.loadUsers();
+          alert('User deleted successfully');
+        },
+        error: (err) => {
+          console.error('Error deleting user:', err);
+          alert('Failed to delete user');
+        }
+      });
+    }
   }
 }

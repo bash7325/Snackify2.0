@@ -139,6 +139,11 @@
           🔖 Keep on Hand ({{ filteredKeepOnHand.length }})
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeTab === 'users'" (click)="activeTab = 'users'; loadUsers()">
+          👥 User Management
+        </a>
+      </li>
     </ul>
 
     <!-- Pending Requests Tab -->
@@ -338,5 +343,99 @@
       </div>
     </div>
 
+    <!-- User Management Tab -->
+    <div *ngIf="activeTab === 'users'">
+      <div class="table-container" *ngIf="users && users.length > 0">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>
+                <span *ngIf="editingUser?.id !== user.id">{{ user.username }}</span>
+                <input *ngIf="editingUser && editingUser.id === user.id" 
+                       type="text" 
+                       class="form-control form-control-sm" 
+                       [(ngModel)]="editingUser.username">
+              </td>
+              <td>
+                <span *ngIf="editingUser?.id !== user.id">{{ user.name }}</span>
+                <input *ngIf="editingUser && editingUser.id === user.id" 
+                       type="text" 
+                       class="form-control form-control-sm" 
+                       [(ngModel)]="editingUser.name">
+              </td>
+              <td>
+                <span *ngIf="editingUser?.id !== user.id">{{ user.role }}</span>
+                <select *ngIf="editingUser && editingUser.id === user.id" 
+                        class="form-select form-select-sm" 
+                        [(ngModel)]="editingUser.role">
+                  <option value="user">user</option>
+                  <option value="Admin">Admin</option>
+                </select>
+              </td>
+              <td>
+                <div *ngIf="editingUser?.id !== user.id">
+                  <button (click)="editUser(user)" class="btn btn-sm btn-primary me-1">
+                    ✏️ Edit
+                  </button>
+                  <button (click)="promptResetPassword(user)" class="btn btn-sm btn-warning me-1">
+                    🔑 Reset Password
+                  </button>
+                  <button (click)="deleteUserConfirm(user)" class="btn btn-sm btn-danger">
+                    🗑️ Delete
+                  </button>
+                </div>
+                <div *ngIf="editingUser && editingUser.id === user.id">
+                  <button (click)="saveUser()" class="btn btn-sm btn-success me-1">
+                    ✓ Save
+                  </button>
+                  <button (click)="cancelEdit()" class="btn btn-sm btn-secondary">
+                    ✗ Cancel
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="!users || users.length === 0" class="empty-state">
+        <p>No users found.</p>
+      </div>
+    </div>
+
   </div>
 </div>
+
+<!-- Password Reset Modal -->
+<div class="modal" [class.show]="resettingPasswordUser" *ngIf="resettingPasswordUser">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Reset Password for {{ resettingPasswordUser.username }}</h5>
+        <button type="button" class="btn-close" (click)="cancelResetPassword()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="newPassword" class="form-label">New Password</label>
+          <input type="password" 
+                 class="form-control" 
+                 id="newPassword" 
+                 [(ngModel)]="newPassword" 
+                 placeholder="Enter new password">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cancelResetPassword()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="resetPassword()">Reset Password</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop" [class.show]="resettingPasswordUser" *ngIf="resettingPasswordUser"></div>
