@@ -55,6 +55,8 @@ h3 {
 
 .table tbody tr {
   background-color: var(--card-bg) !important;
+  transition: none !important;
+  transform: none !important;
 }
 
 .table td a {
@@ -89,7 +91,6 @@ h3 {
 }
 
 .btn-sm:hover:not(:disabled) {
-  transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -99,7 +100,6 @@ h3 {
 
 .table tbody tr:hover {
   background-color: rgba(220, 53, 69, 0.15) !important;
-  transform: scale(1.01);
 }
 
 .table-striped tbody tr:nth-of-type(odd):hover {
@@ -160,7 +160,6 @@ h3 {
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
 

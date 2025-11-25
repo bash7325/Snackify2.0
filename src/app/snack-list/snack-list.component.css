@@ -43,6 +43,21 @@ h1 {
 
 .table tbody tr {
   background-color: var(--card-bg) !important;
+  transition: none !important;
+  transform: none !important;
+  will-change: auto !important;
+  animation: none !important;
+}
+
+.table tbody tr:hover {
+  transition: none !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+.table tbody tr * {
+  transition: none !important;
+  transform: none !important;
 }
 
 .table td {
@@ -70,15 +85,14 @@ h1 {
 
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: rgba(255, 255, 255, 0.02) !important;
-}
-
-.table tbody tr:hover {
-  background-color: rgba(220, 53, 69, 0.15) !important;
-  transform: scale(1.01);
+  transition: none !important;
+  transform: none !important;
 }
 
 .table-striped tbody tr:nth-of-type(odd):hover {
   background-color: rgba(220, 53, 69, 0.15) !important;
+  transition: none !important;
+  transform: none !important;
 }
 
 .loading-container {
@@ -107,11 +121,9 @@ h1 {
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
