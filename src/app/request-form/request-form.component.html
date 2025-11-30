@@ -50,6 +50,7 @@
     <table class="table table-striped" *ngIf="userRequests.length > 0">
       <thead>
         <tr>
+          <th>Status</th>
           <th>Snack</th>
           <th>Drink</th>
           <th>Misc</th>
@@ -59,7 +60,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let request of userRequests">
+        <tr *ngFor="let request of userRequests" [class.ordered-row]="request.ordered_flag === 1">
+          <td>
+            <span *ngIf="request.ordered_flag === 1" class="badge bg-success" title="Your snack has been ordered!">
+              ✓ Ordered
+            </span>
+            <span *ngIf="request.ordered_flag === 0" class="badge bg-warning text-dark">
+              ⏳ Pending
+            </span>
+          </td>
           <td>{{ request.snack }}</td>
           <td>{{ request.drink }}</td>
           <td>{{ request.misc }}</td>
@@ -70,7 +79,13 @@
             <span *ngIf="!request.link">N/A</span>
           </td>
           <td>{{ request.created_at | date: 'shortDate' }}</td>
-          <td>{{ request.ordered_at | date: 'shortDate' }}</td>
+          <td>
+            <span *ngIf="request.ordered_at">
+              {{ request.ordered_at | date: 'shortDate' }}
+              <span class="text-success ms-1" *ngIf="request.ordered_flag === 1">🎉</span>
+            </span>
+            <span *ngIf="!request.ordered_at" class="text-muted">—</span>
+          </td>
         </tr>
         
       </tbody>

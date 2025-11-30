@@ -132,3 +132,18 @@ h1 {
     max-height: 400px;
   }
 }
+
+/* Ordered item notification styles */
+.ordered-row {
+  background-color: rgba(25, 135, 84, 0.1) !important;
+}
+
+.ordered-row:hover {
+  background-color: rgba(25, 135, 84, 0.15) !important;
+}
+
+.badge {
+  font-size: 0.85rem;
+  padding: 0.35em 0.65em;
+  font-weight: 600;
+}
