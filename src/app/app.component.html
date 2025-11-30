@@ -14,7 +14,12 @@
           <li class="nav-item"><a class="nav-link" routerLink="/" routerLinkActive="active">Home</a></li>
           <li class="nav-item" *ngIf="authService.isLoggedIn()"><a class="nav-link" routerLink="/request" routerLinkActive="active">Request Snack</a></li>
           <li class="nav-item" *ngIf="authService.isLoggedIn()"><a class="nav-link" routerLink="/snack-list" routerLinkActive="active">Snack List</a></li>
-          <li class="nav-item" *ngIf="authService.isAdmin() | async"><a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin Dashboard</a></li>
+          <li class="nav-item" *ngIf="authService.isAdmin() | async">
+            <a class="nav-link position-relative" routerLink="/admin" routerLinkActive="active">
+              Admin Dashboard
+              <span *ngIf="pendingRequestCount > 0" class="badge bg-danger rounded-pill ms-1">{{ pendingRequestCount }}</span>
+            </a>
+          </li>
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">

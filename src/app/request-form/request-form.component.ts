@@ -33,6 +33,14 @@ export class RequestFormComponent implements OnInit {
     });
   }
 
+  isRecentlyOrdered(orderedAt: string | null | undefined): boolean {
+    if (!orderedAt) return false;
+    const orderedDate = new Date(orderedAt);
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    return orderedDate >= sevenDaysAgo;
+  }
+
   ngOnInit() {
     // Get the user ID from the auth service
     this.authService.getUser().subscribe(user => { 

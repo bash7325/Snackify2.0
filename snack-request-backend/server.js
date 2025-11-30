@@ -193,6 +193,18 @@ app.post('/api/requests', async (req, res) => {
       }
     });
   });
+
+  // Get pending request count
+  app.get('/api/requests/pending/count', (req, res) => {
+    db.get('SELECT COUNT(*) as count FROM snack_requests WHERE ordered_flag = 0', (err, row) => {
+      if (err) {
+        console.error('Error fetching pending count:', err.message);
+        res.status(500).json({ error: 'Failed to fetch pending count' });
+      } else {
+        res.json({ count: row.count });
+      }
+    });
+  });
   
   
 

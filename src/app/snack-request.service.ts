@@ -38,5 +38,9 @@ private apiUrl = `${environment.apiUrl}/requests`;
   deleteRequest(requestId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${requestId}`);
   }
+
+  getPendingRequestCount(): Observable<{ count: number }> {
+    return this.http.get<{ count: number }>(`${this.apiUrl}/pending/count`);
+  }
   
 }
