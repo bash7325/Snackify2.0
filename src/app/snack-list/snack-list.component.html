@@ -13,6 +13,7 @@
     </div>
   
     <div class="table-container" *ngIf="!loading && !error">
+    <!-- Desktop Table View -->
     <table class="table table-striped">
       <thead>
         <tr>
@@ -53,6 +54,54 @@
           </td> 
         </tr>
       </tbody>
-    </table>    <p class="text-center" *ngIf="snackRequests.length === 0">No snack requests found.</p>
+    </table>
+
+    <!-- Mobile Card View -->
+    <div class="mobile-card-view">
+      <div *ngFor="let request of snackRequests" 
+           class="request-card" 
+           [class.ordered]="request.ordered_flag === 1">
+        <div class="card-header">
+          <span class="card-title">{{ request.user_name }}</span>
+          <span *ngIf="request.ordered_flag === 1" class="badge bg-success">
+            ✓ Ordered
+          </span>
+          <span *ngIf="request.ordered_flag === 0" class="badge bg-warning text-dark">
+            ⏳ Pending
+          </span>
+        </div>
+        <div class="card-row" *ngIf="request.snack">
+          <span class="card-label">Snack:</span>
+          <span class="card-value">{{ request.snack }}</span>
+        </div>
+        <div class="card-row" *ngIf="request.drink">
+          <span class="card-label">Drink:</span>
+          <span class="card-value">{{ request.drink }}</span>
+        </div>
+        <div class="card-row" *ngIf="request.misc">
+          <span class="card-label">Misc:</span>
+          <span class="card-value">{{ request.misc }}</span>
+        </div>
+        <div class="card-row" *ngIf="request.link">
+          <span class="card-label">Link:</span>
+          <span class="card-value">
+            <a [href]="request.link" target="_blank" rel="noopener noreferrer">View Link</a>
+          </span>
+        </div>
+        <div class="card-row">
+          <span class="card-label">Requested:</span>
+          <span class="card-value">{{ request.created_at | date:'shortDate' }}</span>
+        </div>
+        <div class="card-row" *ngIf="request.ordered_at">
+          <span class="card-label">Ordered:</span>
+          <span class="card-value">
+            {{ request.ordered_at | date:'shortDate' }}
+            <span *ngIf="request.ordered_flag === 1">🎉</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-center" *ngIf="snackRequests.length === 0">No snack requests found.</p>
     </div>
   </div>

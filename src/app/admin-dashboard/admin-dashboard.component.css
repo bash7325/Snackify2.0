@@ -463,3 +463,117 @@ h3 {
 .modal-backdrop.show {
   display: block;
 }
+
+/* Mobile-optimized card view for all tables */
+@media (max-width: 768px) {
+  .table-container {
+    max-height: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .table {
+    display: none;
+  }
+
+  .mobile-card-view {
+    display: block !important;
+  }
+
+  .request-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-md);
+    border-left: 4px solid var(--primary-color);
+    position: relative;
+  }
+
+  .request-card.ordered {
+    border-left-color: #198754;
+    background: linear-gradient(135deg, rgba(25, 135, 84, 0.05) 0%, var(--card-bg) 100%);
+  }
+
+  .request-card.keep-on-hand {
+    border-left-color: #0dcaf0;
+    background: linear-gradient(135deg, rgba(13, 202, 240, 0.05) 0%, var(--card-bg) 100%);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .card-title {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-primary);
+  }
+
+  .card-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .card-label {
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .card-value {
+    color: var(--text-primary);
+    text-align: right;
+    word-break: break-word;
+    max-width: 60%;
+  }
+
+  .card-value a {
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    flex-wrap: wrap;
+  }
+
+  .card-actions .btn {
+    flex: 1;
+    min-width: 45%;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .stat-card {
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-card-view {
+    display: none !important;
+  }
+}

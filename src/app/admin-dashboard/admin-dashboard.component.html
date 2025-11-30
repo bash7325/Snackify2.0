@@ -173,6 +173,7 @@
       </div>
 
       <div class="table-container" *ngIf="filteredSnackRequests.length > 0">
+    <!-- Desktop Table View -->
     <table class="table table-striped">
           <thead>
             <tr>
@@ -234,6 +235,46 @@
             </tr>
           </tbody>
         </table>
+
+        <!-- Mobile Card View -->
+        <div class="mobile-card-view">
+          <div *ngFor="let request of filteredSnackRequests" class="request-card">
+            <div class="card-header">
+              <span class="card-title">{{ request.user_name }}</span>
+              <span class="badge bg-warning text-dark" *ngIf="isOlderThan(request.created_at, 7)">Old</span>
+            </div>
+            <div class="card-row" *ngIf="request.snack">
+              <span class="card-label">Snack:</span>
+              <span class="card-value">{{ request.snack }}</span>
+            </div>
+            <div class="card-row" *ngIf="request.drink">
+              <span class="card-label">Drink:</span>
+              <span class="card-value">{{ request.drink }}</span>
+            </div>
+            <div class="card-row" *ngIf="request.misc">
+              <span class="card-label">Misc:</span>
+              <span class="card-value">{{ request.misc }}</span>
+            </div>
+            <div class="card-row" *ngIf="request.link">
+              <span class="card-label">Link:</span>
+              <span class="card-value">
+                <a [href]="request.link" target="_blank" rel="noopener noreferrer">View Link</a>
+              </span>
+            </div>
+            <div class="card-row">
+              <span class="card-label">Requested:</span>
+              <span class="card-value">{{ request.created_at | date:'shortDate' }}</span>
+            </div>
+            <div class="card-actions">
+              <button (click)="markAsOrdered(request)" class="btn btn-success">
+                ✓ Mark Ordered
+              </button>
+              <button (click)="deleteRequest(request)" class="btn btn-danger">
+                🗑️ Delete
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
       <div *ngIf="filteredSnackRequests.length === 0" class="empty-state">
         <p>🎉 No pending requests!</p>
@@ -299,6 +340,53 @@
             </tr>
           </tbody>
         </table>
+
+        <!-- Mobile Card View -->
+        <div class="mobile-card-view">
+          <div *ngFor="let request of filteredOrderedRequests" class="request-card ordered">
+            <div class="card-header">
+              <span class="card-title">{{ request.user_name }}</span>
+              <span class="badge bg-success">✓ Ordered</span>
+            </div>
+            <div class="card-row" *ngIf="request.snack">
+              <span class="card-label">Snack:</span>
+              <span class="card-value">{{ request.snack }}</span>
+            </div>
+            <div class="card-row" *ngIf="request.drink">
+              <span class="card-label">Drink:</span>
+              <span class="card-value">{{ request.drink }}</span>
+            </div>
+            <div class="card-row" *ngIf="request.misc">
+              <span class="card-label">Misc:</span>
+              <span class="card-value">{{ request.misc }}</span>
+            </div>
+            <div class="card-row" *ngIf="request.link">
+              <span class="card-label">Link:</span>
+              <span class="card-value">
+                <a [href]="request.link" target="_blank" rel="noopener noreferrer">View Link</a>
+              </span>
+            </div>
+            <div class="card-row">
+              <span class="card-label">Requested:</span>
+              <span class="card-value">{{ request.created_at | date:'shortDate' }}</span>
+            </div>
+            <div class="card-row">
+              <span class="card-label">Ordered:</span>
+              <span class="card-value">{{ request.ordered_at | date:'shortDate' }} 🎉</span>
+            </div>
+            <div class="card-actions">
+              <button 
+                (click)="markKeepOnHand(request)" 
+                [disabled]="request.keep_on_hand === 1" 
+                class="btn btn-warning">
+                {{ request.keep_on_hand === 1 ? '🔖 Kept' : '🔖 Keep' }}
+              </button>
+              <button (click)="deleteRequest(request)" class="btn btn-danger">
+                🗑️ Delete
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
       <div *ngIf="filteredOrderedRequests.length === 0" class="empty-state">
         <p>No ordered requests found.</p>
@@ -344,6 +432,39 @@
             </tr>
           </tbody>
         </table>
+
+        <!-- Mobile Card View -->
+        <div class="mobile-card-view">
+          <div *ngFor="let request of filteredKeepOnHand" class="request-card keep-on-hand">
+            <div class="card-header">
+              <span class="card-title">{{ request.user_name }}</span>
+              <span class="badge bg-info text-dark">🔖 Keep on Hand</span>
+            </div>
+            <div class="card-row" *ngIf="request.snack">
+              <span class="card-label">Snack:</span>
+              <span class="card-value">{{ request.snack }}</span>
+            </div>
+            <div class="card-row" *ngIf="request.drink">
+              <span class="card-label">Drink:</span>
+              <span class="card-value">{{ request.drink }}</span>
+            </div>
+            <div class="card-row" *ngIf="request.misc">
+              <span class="card-label">Misc:</span>
+              <span class="card-value">{{ request.misc }}</span>
+            </div>
+            <div class="card-row" *ngIf="request.link">
+              <span class="card-label">Link:</span>
+              <span class="card-value">
+                <a [href]="request.link" target="_blank" rel="noopener noreferrer">View Link</a>
+              </span>
+            </div>
+            <div class="card-actions">
+              <button (click)="markNotKeepOnHand(request)" class="btn btn-danger">
+                Remove from List
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
       <div *ngIf="filteredKeepOnHand.length === 0" class="empty-state">
         <p>No items marked as keep on hand.</p>
@@ -353,6 +474,7 @@
     <!-- User Management Tab -->
     <div *ngIf="activeTab === 'users'">
       <div class="table-container" *ngIf="users && users.length > 0">
+        <!-- Desktop Table View -->
         <table class="table table-striped">
           <thead>
             <tr>
@@ -417,6 +539,73 @@
             </tr>
           </tbody>
         </table>
+
+        <!-- Mobile Card View -->
+        <div class="mobile-card-view">
+          <div *ngFor="let user of users" class="request-card">
+            <div class="card-header">
+              <span class="card-title">{{ user.username }}</span>
+              <span class="badge" [class.bg-danger]="user.role === 'Admin'" [class.bg-secondary]="user.role !== 'Admin'">
+                {{ user.role || 'user' }}
+              </span>
+            </div>
+            
+            <!-- View Mode -->
+            <div *ngIf="editingUser?.id !== user.id">
+              <div class="card-row">
+                <span class="card-label">Name:</span>
+                <span class="card-value">{{ user.name }}</span>
+              </div>
+              <div class="card-row">
+                <span class="card-label">Role:</span>
+                <span class="card-value">{{ user.role || 'user' }}</span>
+              </div>
+              <div class="card-actions">
+                <button (click)="editUser(user)" class="btn btn-primary">
+                  ✏️ Edit
+                </button>
+                <button (click)="promptResetPassword(user)" class="btn btn-warning">
+                  🔑 Reset Password
+                </button>
+                <button (click)="deleteUserConfirm(user)" class="btn btn-danger">
+                  🗑️ Delete
+                </button>
+              </div>
+            </div>
+
+            <!-- Edit Mode -->
+            <div *ngIf="editingUser && editingUser.id === user.id">
+              <div class="card-row mb-2">
+                <label class="card-label">Username:</label>
+                <input type="text" 
+                       class="form-control form-control-sm" 
+                       [(ngModel)]="editingUser.username">
+              </div>
+              <div class="card-row mb-2">
+                <label class="card-label">Name:</label>
+                <input type="text" 
+                       class="form-control form-control-sm" 
+                       [(ngModel)]="editingUser.name">
+              </div>
+              <div class="card-row mb-2">
+                <label class="card-label">Role:</label>
+                <select class="form-select form-select-sm" 
+                        [(ngModel)]="editingUser.role">
+                  <option value="user">user</option>
+                  <option value="Admin">Admin</option>
+                </select>
+              </div>
+              <div class="card-actions">
+                <button (click)="saveUser()" class="btn btn-success">
+                  ✓ Save
+                </button>
+                <button (click)="cancelEdit()" class="btn btn-secondary">
+                  ✗ Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div *ngIf="!users || users.length === 0" class="empty-state">
         <p>No users found.</p>
