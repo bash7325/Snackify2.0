@@ -58,6 +58,7 @@
           <th>Link</th>
           <th>Date Requested</th>
           <th>Date Ordered</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -86,6 +87,16 @@
               <span class="text-success ms-1" *ngIf="request.ordered_flag === 1">🎉</span>
             </span>
             <span *ngIf="!request.ordered_at" class="text-muted">—</span>
+          </td>
+          <td>
+            <button 
+              *ngIf="request.ordered_flag === 0" 
+              (click)="cancelRequest(request)" 
+              class="btn btn-sm btn-danger"
+              style="padding: 0.25rem 0.5rem; font-size: 0.8rem; white-space: nowrap;"
+              title="Delete request">
+              🗑️
+            </button>
           </td>
         </tr>
         
@@ -134,6 +145,14 @@
             {{ request.ordered_at | date: 'shortDate' }}
             <span *ngIf="request.ordered_flag === 1">🎉</span>
           </span>
+        </div>
+        <div class="card-actions" *ngIf="request.ordered_flag === 0">
+          <button 
+            (click)="cancelRequest(request)" 
+            class="btn btn-danger btn-sm w-100"
+            title="Delete request">
+            🗑️ Cancel Request
+          </button>
         </div>
       </div>
     </div>

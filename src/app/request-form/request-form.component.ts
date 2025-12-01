@@ -63,6 +63,21 @@ export class RequestFormComponent implements OnInit {
     }
   }
 
+  cancelRequest(request: SnackRequest) {
+    if (confirm('Are you sure you want to cancel this request?')) {
+      this.snackRequestService.deleteRequest(request.id!).subscribe({
+        next: () => {
+          this.loadUserRequests();
+          alert('Request canceled successfully');
+        },
+        error: (error) => {
+          console.error('Error canceling request:', error);
+          alert('Failed to cancel request');
+        }
+      });
+    }
+  }
+
   onSubmit() {
     console.log("Submit button clicked"); // This confirms the button works
 
