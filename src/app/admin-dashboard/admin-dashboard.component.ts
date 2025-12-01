@@ -211,29 +211,9 @@ export class AdminDashboardComponent implements OnInit {
         return fuseResult[0].item.category;
       }
       
-      // If no match, extract the main noun (remove flavors/adjectives)
-      // Remove common flavor words
-      const flavorWords = ['cherry', 'strawberry', 'blueberry', 'chocolate', 'vanilla', 
-                          'caramel', 'peanut butter', 'bbq', 'sour cream', 'ranch', 
-                          'cheddar', 'nacho', 'cool ranch', 'spicy', 'hot', 'mild',
-                          'original', 'classic', 'honey', 'sweet', 'salty', 'extra',
-                          'double', 'triple', 'mega', 'mini', 'family size'];
-      
-      let cleaned = lower;
-      flavorWords.forEach(flavor => {
-        cleaned = cleaned.replace(new RegExp('\\b' + flavor + '\\b', 'gi'), '').trim();
-      });
-      
-      // Remove multiple spaces and capitalize first letter of each word
-      cleaned = cleaned.replace(/\s+/g, ' ').trim();
-      if (cleaned) {
-        return cleaned.split(' ').map(word => 
-          word.charAt(0).toUpperCase() + word.slice(1)
-        ).join(' ');
-      }
-      
-      // Fallback to original capitalized
-      return snack.charAt(0).toUpperCase() + snack.slice(1);
+      // If no match found, return the exact original snack name
+      // This prevents incorrect grouping of unrelated items
+      return snack;
     };
     
     this.allRequests.forEach(r => {
