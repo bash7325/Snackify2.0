@@ -192,22 +192,23 @@ export class AdminDashboardComponent implements OnInit {
         }
       }
       
-      // If no exact match, use fuse.js for fuzzy matching
-      const categoryList = Object.keys(categories).map(cat => ({
-        name: cat,
-        keywords: categories[cat]
-      }));
+      // If no exact match, use fuse.js ONLY on individual keywords for typo tolerance
+      // Build a flat list of all keywords with their category
+      const keywordList: {keyword: string, category: string}[] = [];
+      Object.entries(categories).forEach(([category, keywords]) => {
+        keywords.forEach(kw => keywordList.push({keyword: kw, category}));
+      });
       
-      const fuse = new Fuse(categoryList, {
-        keys: ['keywords'],
-        threshold: 0.3, // 0 = exact match, 1 = match anything
-        distance: 100,
+      const fuse = new Fuse(keywordList, {
+        keys: ['keyword'],
+        threshold: 0.2, // Stricter threshold (only 1-2 character differences)
+        distance: 50,
         includeScore: true
       });
       
       const fuseResult = fuse.search(normalized);
-      if (fuseResult.length > 0 && fuseResult[0].score! < 0.3) {
-        return fuseResult[0].item.name;
+      if (fuseResult.length > 0 && fuseResult[0].score! < 0.2) {
+        return fuseResult[0].item.category;
       }
       
       // If no match, extract the main noun (remove flavors/adjectives)
