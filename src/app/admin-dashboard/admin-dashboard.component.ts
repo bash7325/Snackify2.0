@@ -152,7 +152,7 @@ export class AdminDashboardComponent implements OnInit {
         'Wheat Thins': ['wheat thin', 'wheat thins', 'wheatthins'],
         'Triscuits': ['triscuit', 'triscuits', 'triscit'],
         'Snickers': ['snicker', 'snickers', 'sniker', 'snikkers'],
-        'M&Ms': ['m&m', 'mnm', 'm and m', 'm&ms', 'mnms', 'mm', 'mms'],
+        'M&Ms': ['m&m', 'mnm', 'm and m', 'm&ms', 'mnms'],
         'Reeses': ['reese', 'reeses', 'peanut butter cup', 'reese cup', 'reeses cup', 'reese piece', 'reeses pieces'],
         'Kit Kat': ['kit kat', 'kitkat', 'kit-kat', 'kikat'],
         'Twix': ['twix', 'twix bar'],
@@ -226,7 +226,11 @@ export class AdminDashboardComponent implements OnInit {
         // Track unique variants (case-insensitive)
         const lowerVariant = r.snack.toLowerCase();
         if (!snackCounts[category].variants.some(v => v.toLowerCase() === lowerVariant)) {
-          snackCounts[category].variants.push(r.snack);
+          // Only add as variant if the snack name is different from the category name
+          // This prevents unrelated items from showing as variants
+          if (r.snack.toLowerCase() !== category.toLowerCase()) {
+            snackCounts[category].variants.push(r.snack);
+          }
         }
       }
     });
