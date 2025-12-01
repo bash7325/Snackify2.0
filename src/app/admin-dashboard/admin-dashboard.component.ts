@@ -3,6 +3,7 @@ import { SnackRequestService } from '../snack-request.service';
 import { SnackRequest } from '../snack-request';
 import { AuthService } from '../auth.service';
 import { User } from '../user';
+import Fuse from 'fuse.js';
 
 interface Stats {
   totalPending: number;
@@ -118,63 +119,95 @@ export class AdminDashboardComponent implements OnInit {
       r.ordered_at && new Date(r.ordered_at) >= monthAgo
     ).length;
     
-    // Top snacks with fuzzy matching
+    // Top snacks with enhanced fuzzy matching
     const snackCounts: {[key: string]: {count: number, variants: string[]}} = {};
     
-    // Categorize snacks using smart keyword extraction
+    // Normalize string: remove plurals, punctuation, extra spaces
+    const normalizeString = (str: string): string => {
+      return str.toLowerCase()
+        .replace(/[^\w\s]/g, ' ') // Remove punctuation
+        .replace(/\s+/g, ' ') // Multiple spaces to single
+        .replace(/s\b/g, '') // Remove trailing 's' for plurals
+        .trim();
+    };
+    
+    // Categorize snacks using smart keyword extraction with fuse.js
     const categorizeSnack = (snack: string): string => {
       const lower = snack.toLowerCase().trim();
+      const normalized = normalizeString(snack);
       
-      // Common brand/category mappings
+      // Expanded brand/category mappings with variations and common misspellings
       const categories: {[key: string]: string[]} = {
-        'Pop Tarts': ['pop tart', 'poptart', 'pop-tart'],
-        'Cheez-Its': ['cheez it', 'cheezit', 'cheez-it', 'cheese it'],
-        'Goldfish': ['goldfish', 'gold fish'],
-        'Oreos': ['oreo'],
-        'Chips Ahoy': ['chips ahoy', 'chip ahoy'],
-        'Doritos': ['dorito'],
-        'Cheetos': ['cheeto', 'hot cheeto', 'flamin hot'],
-        'Fritos': ['frito'],
-        'Lays': ['lay chip', 'lays chip'],
-        'Pringles': ['pringle'],
-        'Ritz': ['ritz cracker'],
-        'Wheat Thins': ['wheat thin'],
-        'Triscuits': ['triscuit'],
-        'Snickers': ['snicker'],
-        'M&Ms': ['m&m', 'mnm', 'm and m'],
-        'Reeses': ['reese', 'reeses', 'peanut butter cup'],
-        'Kit Kat': ['kit kat', 'kitkat'],
-        'Twix': ['twix'],
-        'Skittles': ['skittle'],
-        'Starburst': ['starburst', 'star burst'],
-        'Granola Bars': ['granola bar', 'nature valley'],
-        'Protein Bars': ['protein bar', 'cliff bar', 'clif bar', 'quest bar'],
-        'Rice Krispies': ['rice krispie', 'rice crispy'],
-        'Fruit Snacks': ['fruit snack', 'gusher', 'fruit roll'],
-        'Nutri-Grain': ['nutri grain', 'nutrigrain'],
-        'Crackers': ['cracker', 'saltine'],
-        'Pretzels': ['pretzel'],
-        'Popcorn': ['popcorn', 'pop corn'],
-        'Trail Mix': ['trail mix', 'mixed nut'],
-        'Peanuts': ['peanut', 'planter'],
-        'Almonds': ['almond'],
-        'Cashews': ['cashew'],
-        'Cookies': ['cookie', 'chocolate chip cookie'],
-        'Brownies': ['brownie', 'cosmic brownie'],
-        'Muffins': ['muffin'],
-        'Donuts': ['donut', 'doughnut', 'krispy kreme'],
-        'Candy Bars': ['candy bar', 'chocolate bar'],
-        'Gum': ['gum', 'chewing gum'],
-        'Mints': ['mint', 'tic tac', 'altoid']
+        'Pop Tarts': ['pop tart', 'poptart', 'pop-tart', 'poptarts', 'pop tarts'],
+        'Cheez-Its': ['cheez it', 'cheezit', 'cheez-it', 'cheese it', 'cheezits', 'cheese its', 'chees it', 'cheez its'],
+        'Goldfish': ['goldfish', 'gold fish', 'goldfish cracker', 'golfish'],
+        'Oreos': ['oreo', 'oreos', 'orieo', 'orieos', 'oreo cookie'],
+        'Chips Ahoy': ['chips ahoy', 'chip ahoy', 'chipsahoy', 'chips ahoy cookie'],
+        'Doritos': ['dorito', 'doritos', 'dorritos', 'doritto', 'dorito chip'],
+        'Cheetos': ['cheeto', 'cheetos', 'hot cheeto', 'flamin hot', 'flaming hot', 'flammin hot', 'cheato', 'cheatos'],
+        'Fritos': ['frito', 'fritos', 'frito chip', 'freetos'],
+        'Lays': ['lay chip', 'lays chip', 'lays', 'lay', 'lays potato chip'],
+        'Pringles': ['pringle', 'pringles', 'pringel', 'pringels'],
+        'Ritz': ['ritz cracker', 'ritz', 'ritz crackers'],
+        'Wheat Thins': ['wheat thin', 'wheat thins', 'wheatthins'],
+        'Triscuits': ['triscuit', 'triscuits', 'triscit'],
+        'Snickers': ['snicker', 'snickers', 'sniker', 'snikkers'],
+        'M&Ms': ['m&m', 'mnm', 'm and m', 'm&ms', 'mnms', 'mm', 'mms'],
+        'Reeses': ['reese', 'reeses', 'peanut butter cup', 'reese cup', 'reeses cup', 'reese piece', 'reeses pieces'],
+        'Kit Kat': ['kit kat', 'kitkat', 'kit-kat', 'kikat'],
+        'Twix': ['twix', 'twix bar'],
+        'Skittles': ['skittle', 'skittles', 'skitle', 'skitles'],
+        'Starburst': ['starburst', 'star burst', 'starbursts'],
+        'Granola Bars': ['granola bar', 'nature valley', 'granola', 'naturevalley', 'nature valley bar'],
+        'Protein Bars': ['protein bar', 'cliff bar', 'clif bar', 'quest bar', 'protein', 'kind bar', 'rx bar'],
+        'Rice Krispies': ['rice krispie', 'rice crispy', 'rice krispies', 'rice krispie treat', 'krispie treat'],
+        'Fruit Snacks': ['fruit snack', 'gusher', 'fruit roll', 'fruit rollup', 'welch fruit snack'],
+        'Nutri-Grain': ['nutri grain', 'nutrigrain', 'nutri-grain', 'nutri grain bar'],
+        'Crackers': ['cracker', 'saltine', 'saltines', 'crackers'],
+        'Pretzels': ['pretzel', 'pretzels', 'pretsel'],
+        'Popcorn': ['popcorn', 'pop corn', 'smartfood', 'kettle corn'],
+        'Trail Mix': ['trail mix', 'mixed nut', 'trailmix', 'trail'],
+        'Peanuts': ['peanut', 'planter', 'planters', 'peanuts', 'planters peanut'],
+        'Almonds': ['almond', 'almonds'],
+        'Cashews': ['cashew', 'cashews', 'cashoo'],
+        'Cookies': ['cookie', 'chocolate chip cookie', 'cookies', 'choc chip'],
+        'Brownies': ['brownie', 'cosmic brownie', 'brownies', 'cosmic'],
+        'Muffins': ['muffin', 'muffins'],
+        'Donuts': ['donut', 'doughnut', 'krispy kreme', 'donuts', 'doughnuts', 'dunkin'],
+        'Candy Bars': ['candy bar', 'chocolate bar', 'candy', 'candybar'],
+        'Gum': ['gum', 'chewing gum', 'bubblegum', 'bubble gum'],
+        'Mints': ['mint', 'tic tac', 'altoid', 'mints', 'tictac', 'altoids'],
+        'Soda': ['coke', 'coca cola', 'pepsi', 'soda', 'pop', 'cola', 'diet coke', 'coke zero', 'dr pepper'],
+        'Energy Drinks': ['red bull', 'monster', 'redbull', 'energy drink', 'rockstar'],
+        'Water': ['water', 'aquafina', 'dasani', 'sparkling water', 'la croix'],
+        'Gatorade': ['gatorade', 'gatoraid', 'powerade', 'sports drink']
       };
       
-      // Check if snack matches any category
+      // Check exact and normalized matches first
       for (const [category, keywords] of Object.entries(categories)) {
         for (const keyword of keywords) {
-          if (lower.includes(keyword)) {
+          if (lower.includes(keyword) || normalized.includes(normalizeString(keyword))) {
             return category;
           }
         }
+      }
+      
+      // If no exact match, use fuse.js for fuzzy matching
+      const categoryList = Object.keys(categories).map(cat => ({
+        name: cat,
+        keywords: categories[cat]
+      }));
+      
+      const fuse = new Fuse(categoryList, {
+        keys: ['keywords'],
+        threshold: 0.3, // 0 = exact match, 1 = match anything
+        distance: 100,
+        includeScore: true
+      });
+      
+      const fuseResult = fuse.search(normalized);
+      if (fuseResult.length > 0 && fuseResult[0].score! < 0.3) {
+        return fuseResult[0].item.name;
       }
       
       // If no match, extract the main noun (remove flavors/adjectives)
@@ -224,7 +257,7 @@ export class AdminDashboardComponent implements OnInit {
         variants: variants.length > 1 ? variants.slice(0, 3) : undefined
       }))
       .sort((a, b) => b.count - a.count)
-      .slice(0, 5);
+      .slice(0, 10);
     
     // Top users
     const userCounts: {[key: string]: number} = {};
